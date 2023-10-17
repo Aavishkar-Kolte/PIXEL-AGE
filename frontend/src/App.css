@@ -1,0 +1,200 @@
+.App {
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+* {
+  font-family: 'VT323', monospace;
+}
+
+/* CSS */
+.button-50 {
+  display: block;
+  appearance: button;
+  background-color: #000;
+  background-image: none;
+  border: 1px solid #000;
+  border-radius: 4px;
+  box-shadow: #fff 4px 4px 0 0, #000 4px 4px 0 1px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-family: '04b_03b';
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 20px;
+  margin: 0 5px 10px 0;
+  overflow: visible;
+  padding: 12px 40px;
+  text-align: center;
+  text-transform: none;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  /* vertical-align: middle; */
+  width: 225px;
+  white-space: nowrap;
+}
+
+.button-50:focus {
+  text-decoration: none;
+}
+
+.button-50:hover {
+  text-decoration: none;
+}
+
+.button-50:active {
+  box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
+  outline: 0;
+}
+
+.button-50:not([disabled]):active {
+  box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+  transform: translate(2px, 2px);
+}
+
+@media (min-width: 768px) {
+  .button-50 {
+    padding: 12px 50px;
+  }
+}
+
+.homepage-container {
+  background-image: url("c:\Users\aavis\Downloads\Medieval_Castle_.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100vw 100vh;
+  /* Updated property */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+
+.btn-div {
+  padding: 50px;
+}
+
+.createlobbypage-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.createlobbypage-container div {
+  padding: 20px;
+}
+
+input {
+  display: block;
+  width: 225px;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  border-radius: 4px;
+  /* box-shadow: #fff 4px 4px 0 0,#000 4px 4px 0 1px; */
+  font-family: ITCAvantGardeStd-Bk, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  margin: 0 5px 10px 0;
+  overflow: visible;
+  padding: 12px 40px;
+  text-align: center;
+}
+
+.joinlobbypage-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-container {
+  position: relative;
+  display: inline-block
+}
+
+.div1 {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.div2 {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 4px solid white;
+  border-left: 4px solid white;
+  border-bottom: 4px solid white;
+}
+
+.health-div {
+  background-color: red;
+  height: 30px;
+  width: 100%
+}
+
+.player-health-bar {
+  position: absolute;
+  background: #818cf8;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.timer{
+  width: auto;
+  height: auto;
+  display: inline-block; 
+  color: #fff;
+  font-family: 'VT323', monospace; 
+  font-size: 22px;
+  opacity: 0.9;
+  /* border-style: solid; */
+  /* border-width: 2px; */
+  padding: 3px 20px;
+}
+
+.enemy-health-bar {
+  position: absolute;
+  background: #818cf8;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.div3 {
+  position: relative;
+  width: 100%;
+  border-top: 4px solid white;
+  border-bottom: 4px solid white;
+  border-right: 4px solid white;
+}
+
+.game-over-text {
+  position: absolute;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+}
