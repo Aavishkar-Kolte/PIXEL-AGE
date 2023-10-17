@@ -6,7 +6,6 @@ export class Fighter extends Sprite {
     constructor(ctx, {
         position,
         velocity,
-        color = 'red',
         imageSrc,
         scale = 1,
         framesMax = 1,
@@ -34,27 +33,26 @@ export class Fighter extends Sprite {
             width: attackBox.width,
             height: attackBox.height
         }
-        this.color = color
         this.health = 100
-        this.lastkey = '';
         this.framesCurrent = 0
         this.framesElapsed = 0
         this.sprites = sprites
         this.currentSprite = 'idle'
-        // this.currentStatus = {
-        //     lastkey : '',
-        //     health : 100,
-        //     dead : false,
-        //     isJumping: false,
-        //     isFalling: false,
-        //     isAttacking: false,
-        //     isDefending: false
-        // }
+        this.currentStatus = {
+            lastMove: '',
+            isMovingForward: false,
+            isMovingBackward: false,
+            isJumping: false,
+            isAttacking: false,
+            isDefending: false
+        }
+
         this.dead = false
-        this.isJumping = false;
-        this.isFalling = false;
-        this.isDefending = false;
-        this.isAttacking = false
+
+        // this.isJumping = false;
+        // this.isDefending = false;
+        // this.isAttacking = false
+        // this.lastkey = '';
 
         for (const sprite in this.sprites) {
             sprites[sprite].image = new Image()
@@ -64,7 +62,7 @@ export class Fighter extends Sprite {
 
     draw() {
 
-        if (this.isImageLoaded) { // Check if the image is loaded
+        if (this.isImageLoaded) { 
             this.ctx.drawImage(
                 this.image,
                 this.framesCurrent * (this.image.width / this.framesMax),
@@ -86,7 +84,7 @@ export class Fighter extends Sprite {
 
             if (this.framesCurrent < this.framesMax - 1) {
                 this.framesCurrent++;
-            } else if (!(this.isJumping || this.isFalling)) {
+            } else if (!this.isJumping ) {
                 this.framesCurrent = 0;
             }
         }
@@ -121,16 +119,13 @@ export class Fighter extends Sprite {
     }
 
     attack() {
-        if (!this.isDefending) {
+        if (!this.currentStatus.isDefending) {
             this.switchSprite('attack1');
-            this.isAttacking = true;
         }
-
-
     }
 
     takeHit() {
-        if (this.isDefending) {
+        if (this.currentStatus.isDefending) {
             this.health -= 2.5;
             if (this.health <= 0) {
                 this.switchSprite('death');
