@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import Canvas from "../components/Canvas";
-import gsap from "gsap";
 
 import { Sprite } from "../game-js/Sprite";
 import { Fighter } from "../game-js/Fighter";
@@ -9,8 +8,8 @@ import { rectangularCollision, determineWinner } from "../game-js/Utils";
 const FightingGame = (props) => {
 
     const [ctx, setCtx] = useState(null);
-    const gameOverText = useRef();
-    const timer = useRef();
+    const gameOverText = useRef(null);
+    const timer = useRef(null);
     const gameOver = useRef(false);
 
     let time = useRef(60);
@@ -19,107 +18,90 @@ const FightingGame = (props) => {
         setCtx(context);
     };
 
-    const keys = {
-        a: {
-            pressed: false
-        },
-        d: {
-            pressed: false
-        },
-        k: {
-            pressed: false
-        },
-        ArrowRight: {
-            pressed: false
-        },
-        ArrowLeft: {
-            pressed: false
-        },
-        Enter: {
-            pressed: false
-        }
-    }
-
-
     const playerHealthBar = new Sprite(ctx, {
         position: {
-            x: 75,
-            y: 24
+            x: 85,
+            y: 34
         },
         imageSrc: '../img/bar.png',
-        scale: 2.5,
+        scale: 2.6,
         framesMax: 1
     });
 
     const enemyHealthBar = new Sprite(ctx, {
         position: {
-            x: 480,
-            y: 24
+            x: 460,
+            y: 34
         },
         imageSrc: '../img/bar.png',
-        scale: 2.5,
+        scale: 2.6,
         framesMax: 1
     });
 
     const playerHealthBarBG = new Sprite(ctx, {
         position: {
-            x: 90,
-            y: 30
+            x: 110,
+            y: 41
         },
         imageSrc: '../img/bar_background.png',
-        scale: 2.7,
+        scale: 2.6,
         framesMax: 1
     });
 
     const enemyHealthBarBG = new Sprite(ctx, {
         position: {
             x: 490,
-            y: 30
+            y: 41
         },
         imageSrc: '../img/bar_background.png',
-        scale: 2.7,
+        scale: 2.6,
         framesMax: 1
     });
 
     const playerHealth = new Sprite(ctx, {
         position: {
-            x: 90,
-            y: 31
+            x: 110,
+            y: 42
         },
         imageSrc: '../img/health_bar_flipped.png',
-        scale: 2.55,
+        scale: 2.6,
         framesMax: 1
     });
 
     const enemyHealth = new Sprite(ctx, {
         position: {
-            x: 504,
-            y: 30
+            x: 482,
+            y: 42
         },
         imageSrc: '../img/health_bar.png',
-        scale: 2.55,
+        scale: 2.6,
         framesMax: 1
     });
 
     const playerWeaponIcon = new Sprite(ctx, {
         position: {
-            x: 15,
-            y: 5
+            x: 25,
+            y: 15
         },
-        imageSrc: '../img/weapon_icon.png',
-        scale: 1.25,
+        imageSrc: '../img/weapon_icon_flipped.png',
+        scale: 1.3,
         framesMax: 1
     });
 
     const enemyWeaponIcon = new Sprite(ctx, {
         position: {
-            x: 767,
-            y: 5
+            x: 754,
+            y: 15
         },
         imageSrc: '../img/weapon_icon.png',
-        scale: 1.25,
+        scale: 1.3,
         framesMax: 1
     });
+
+
+
+
+
 
     const background = new Sprite(ctx, {
         position: {
@@ -169,7 +151,7 @@ const FightingGame = (props) => {
 
     const player = new Fighter(ctx, {
         position: {
-            x: 30,
+            x: 80,
             y: 100
         },
         velocity: {
@@ -241,14 +223,13 @@ const FightingGame = (props) => {
 
     const enemy = new Fighter(ctx, {
         position: {
-            x: 770,
+            x: 714,
             y: 100
         },
         velocity: {
             x: 0,
             y: 0
         },
-        color: 'blue',
         imageSrc: '../img/Knight_2/Idle.png',
         framesMax: 4,
         scale: 2,
@@ -316,51 +297,48 @@ const FightingGame = (props) => {
         if (!player.dead) {
             switch (event.key) {
                 case 'd':
-                    keys.d.pressed = true
-                    player.lastKey = 'd'
+                    player.currentStatus.isMovingForward = true
+                    player.currentStatus.lastMove = 'forward';
                     // props.sendData(keys);
-                    break
+                    break;
                 case 'a':
-                    keys.a.pressed = true
-                    player.lastKey = 'a'
+                    player.currentStatus.isMovingBackward = true;
+                    player.currentStatus.lastMove = 'backward';
                     // props.sendData(keys);
-                    break
+                    break;
                 case 'w':
-                    if(!keys.k.pressed)
-                    player.velocity.y = -15
-
-                    break
+                    if (!player.currentStatus.isDefending)
+                        player.currentStatus.isJumping = true;
+                    break;
                 case ' ':
-                    player.attack()
-                    break
+                    player.currentStatus.isAttacking = true;
+                    break;
                 case 'k':
-                    keys.k.pressed = true;
-                    player.isDefending = true;
-                    break
+                    player.currentStatus.isDefending = true;
+                    break;
             }
         }
 
         if (!enemy.dead) {
             switch (event.key) {
                 case 'ArrowRight':
-                    keys.ArrowRight.pressed = true
-                    enemy.lastKey = 'ArrowRight'
-                    break
+                    enemy.currentStatus.isMovingBackward = true;
+                    enemy.currentStatus.lastMove = 'backward';
+                    break;
                 case 'ArrowLeft':
-                    keys.ArrowLeft.pressed = true
-                    enemy.lastKey = 'ArrowLeft'
-                    break
+                    enemy.currentStatus.isMovingForward = true;
+                    enemy.currentStatus.lastMove = 'forward';
+                    break;
                 case 'ArrowUp':
-                    if(!enemy.isDefending)
-                    enemy.velocity.y = -15
-                    break
+                    if (!enemy.currentStatus.isDefending)
+                        enemy.currentStatus.isJumping = true;
+                    break;
                 case 'ArrowDown':
-                    enemy.attack()
-                    break
+                    enemy.currentStatus.isAttacking = true;
+                    break;
                 case 'Enter':
-                    keys.Enter.pressed = true;
-                    enemy.isDefending = true;
-                    break
+                    enemy.currentStatus.isDefending = true;
+                    break;
             }
         }
     }
@@ -370,28 +348,26 @@ const FightingGame = (props) => {
 
         switch (event.key) {
             case 'd':
-                keys.d.pressed = false
-                break
+                player.currentStatus.isMovingForward = false;
+                break;
             case 'a':
-                keys.a.pressed = false
-                break
+                player.currentStatus.isMovingBackward = false;
+                break;
             case 'k':
-                keys.k.pressed = false;
-                player.isDefending = false;
-                break
+                player.currentStatus.isDefending = false;
+                break;
         }
 
         // enemy keys
         switch (event.key) {
             case 'ArrowRight':
-                keys.ArrowRight.pressed = false
+                enemy.currentStatus.isMovingBackward = false;
                 break
             case 'ArrowLeft':
-                keys.ArrowLeft.pressed = false
+                enemy.currentStatus.isMovingForward = false;
                 break
             case 'Enter':
-                keys.Enter.pressed = false;
-                enemy.isDefending = false;
+                enemy.currentStatus.isDefending = false;
                 break
         }
     }
@@ -401,19 +377,17 @@ const FightingGame = (props) => {
 
     const decreaseTimer = useMemo(() => {
         return () => {
-            // console.log(time);
-
             if (time.current > 0) {
                 timerId.current = setTimeout(() => {
                     time.current--;
                     if (timer.current) {
                         timer.current.innerHTML = time.current;
                     }
-                    decreaseTimer(); // Schedule the next call
+                    decreaseTimer();
                 }, 1000);
             }
             else {
-                return
+                return;
             }
         }
     }, [gameOverText])
@@ -459,8 +433,8 @@ const FightingGame = (props) => {
             playerWeaponIcon.update();
             enemyWeaponIcon.update();
 
-            playerHealth.ctx.drawImage(
 
+            playerHealth.ctx.drawImage(
                 playerHealth.image,
                 0,
                 0,
@@ -485,8 +459,11 @@ const FightingGame = (props) => {
                 enemyHealth.image.height * enemyHealth.scale
             );
 
+
             playerHealthBar.update();
             enemyHealthBar.update();
+
+
 
             player.velocity.x = 0;
             enemy.velocity.x = 0;
@@ -504,104 +481,143 @@ const FightingGame = (props) => {
 
 
 
-            // player movement
-
-            if (keys.a.pressed && player.lastKey === 'a' && player.position.x > 5) {
-                if(player.isDefending){
-                    player.velocity.x = -2;
-                } else{
-                    player.velocity.x = -5;
-                    player.switchSprite('run');
-                }
-                
-                
-            } else if (keys.d.pressed && player.lastKey === 'd' && player.position.x < 780) {
-                if(player.isDefending){
-                    player.velocity.x = 2;
-                } else{
-                    player.velocity.x = 5;
-                    player.switchSprite('run');
-                }
-               
-            }
-
-            // jumping
-            if (player.velocity.y < 0) {
-                player.switchSprite('jump');
-                player.isJumping = true;
-            } else if (player.velocity.y > 0) {
-                player.switchSprite('fall');
-                player.isFalling = true;
-            }
-
-            if (player.position.y <= 105 && !(player.velocity.y > 0)) {
-                player.velocity.y = 0
-            }
-
-            if (player.isAttacking === false && player.velocity.y === 0 && player.velocity.x === 0 && !player.isJumping) {
-                player.switchSprite('idle');
-            }
-
-            if (player.velocity.y === 0) {
-                player.isJumping = false;
-                player.isFalling = false;
-            }
-
-            if(keys.k.pressed){
-                player.switchSprite('defend')
-                if(player.velocity.y < 0) player.velocity.y = 0;
-            }
-
-
-
 
             // Enemy movement
-            if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft' && enemy.position.x > 20) {
-                if(enemy.isDefending){
+            if (enemy.currentStatus.isMovingForward && enemy.currentStatus.lastMove === 'forward' && enemy.position.x > 20) {
+                if (enemy.currentStatus.isDefending) {
                     enemy.velocity.x = -2;
-                } else{
+                } else {
                     enemy.velocity.x = -5;
                     enemy.switchSprite('run');
                 }
-                
-            } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight' && enemy.position.x < 795) {
-                if(enemy.isDefending){
+            } else if (enemy.currentStatus.isMovingBackward && enemy.currentStatus.lastMove === 'backward' && enemy.position.x < 795) {
+                if (enemy.currentStatus.isDefending) {
                     enemy.velocity.x = 2
-                } else{
+                } else {
                     enemy.velocity.x = 5;
                     enemy.switchSprite('run');
                 }
-                
+            }
+
+            if (enemy.currentStatus.isJumping) {
+                enemy.velocity.y = -15;
+                enemy.currentStatus.isJumping = false;
             }
 
             // jumping
             if (enemy.velocity.y < 0) {
                 enemy.switchSprite('jump');
-                enemy.isJumping = true;
             } else if (enemy.velocity.y > 0) {
                 enemy.switchSprite('fall');
-                enemy.isFalling = false;
             }
 
             if (enemy.position.y <= 105 && !(enemy.velocity.y > 0)) {
                 enemy.velocity.y = 0
             }
 
-
-
-            if (enemy.isAttacking === false && enemy.velocity.y === 0 && enemy.velocity.x === 0 && !enemy.isJumping) {
+            if (enemy.currentStatus.isAttacking === false && enemy.velocity.y === 0 && enemy.velocity.x === 0 && !enemy.currentStatus.isJumping) {
                 enemy.switchSprite('idle');
             }
 
             if (enemy.velocity.y === 0) {
-                enemy.isJumping = false;
-                enemy.isFalling = false;
+                enemy.currentStatus.isJumping = false;
             }
 
-            
-            if(keys.Enter.pressed){
+
+
+
+
+
+
+
+            // player movement
+
+            if (player.currentStatus.isMovingBackward && player.currentStatus.lastMove === 'backward' && player.position.x > 5) {
+                if (player.currentStatus.isDefending) {
+                    player.velocity.x = -2;
+                } else {
+                    player.velocity.x = -5;
+                    player.switchSprite('run');
+                }
+            } else if (player.currentStatus.isMovingForward && player.currentStatus.lastMove === 'forward' && player.position.x < 780) {
+                if (player.currentStatus.isDefending) {
+                    player.velocity.x = 2;
+                } else {
+                    player.velocity.x = 5;
+                    player.switchSprite('run');
+                }
+            }
+
+            if (player.currentStatus.isJumping) {
+                player.velocity.y = -15;
+                player.currentStatus.isJumping = false;
+            }
+
+            // jumping
+            if (player.velocity.y < 0) {
+                player.switchSprite('jump');
+            } else if (player.velocity.y > 0) {
+                player.switchSprite('fall');
+            }
+
+            if (player.position.y <= 105 && !(player.velocity.y > 0)) {
+                player.velocity.y = 0
+            }
+
+            if (player.currentStatus.isAttacking === false && player.velocity.y === 0 && player.velocity.x === 0 && !player.currentStatus.isJumping) {
+                player.switchSprite('idle');
+            }
+
+            if (player.velocity.y === 0) {
+                player.currentStatus.isJumping = false;
+            }
+
+
+
+
+
+
+
+            if (enemy.currentStatus.isDefending) {
                 enemy.switchSprite('defend')
-                if(enemy.velocity.y < 0) enemy.velocity.y = 0;
+                if (enemy.velocity.y < 0) enemy.velocity.y = 0;
+            }
+
+            if (player.currentStatus.isDefending) {
+                player.switchSprite('defend')
+                if (player.velocity.y < 0) player.velocity.y = 0;
+            }
+
+
+
+
+
+
+
+            if (player.currentStatus.isAttacking) {
+                player.attack();
+            }
+
+            if (enemy.currentStatus.isAttacking) {
+                enemy.attack();
+            }
+
+
+
+
+
+
+            // enemyHealth is where our player gets hit
+            if (
+                rectangularCollision({
+                    rectangle1: enemy,
+                    rectangle2: player
+                }) &&
+                enemy.currentStatus.isAttacking &&
+                enemy.framesCurrent === 2
+            ) {
+                player.takeHit();
+                enemy.currentStatus.isAttacking = false;
             }
 
             // detect for collision & enemy gets hit
@@ -610,36 +626,33 @@ const FightingGame = (props) => {
                     rectangle1: player,
                     rectangle2: enemy
                 }) &&
-                player.isAttacking &&
+                player.currentStatus.isAttacking &&
                 player.framesCurrent === 2
             ) {
                 enemy.takeHit();
-                player.isAttacking = false;
+                player.currentStatus.isAttacking = false;
                 enemyHealth.offset.x = enemyHealth.image.width * enemyHealth.scale * (enemy.health / 100 - 1);
             }
 
-            // if player misses
-            if (player.isAttacking && player.framesCurrent === 3) {
-                player.isAttacking = false;
-            }
 
-            // enemyHealth is where our player gets hit
-            if (
-                rectangularCollision({
-                    rectangle1: enemy,
-                    rectangle2: player
-                }) &&
-                enemy.isAttacking &&
-                enemy.framesCurrent === 2
-            ) {
-                player.takeHit();
-                enemy.isAttacking = false;
+
+
+
+
+            // if player misses
+            if (enemy.currentStatus.isAttacking && enemy.framesCurrent === 3) {
+                enemy.currentStatus.isAttacking = false;
             }
 
             // if player misses
-            if (enemy.isAttacking && enemy.framesCurrent === 3) {
-                enemy.isAttacking = false;
+            if (player.currentStatus.isAttacking && player.framesCurrent === 3) {
+                player.currentStatus.isAttacking = false;
             }
+
+
+
+
+
 
             // end game based on health
             if (enemy.health <= 0 || player.health <= 0) {

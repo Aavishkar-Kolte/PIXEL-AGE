@@ -164,10 +164,12 @@ input {
   color: #fff;
   font-family: 'VT323', monospace; 
   font-size: 22px;
+  font-weight: 800;
   opacity: 0.9;
   /* border-style: solid; */
   /* border-width: 2px; */
   padding: 3px 20px;
+  padding-top: 10px;
 }
 
 .enemy-health-bar {
@@ -188,7 +190,9 @@ input {
 }
 
 .game-over-text {
-  position: absolute;
+  font-family: 'VT323', monospace;
+  font-weight: 600;
+  position:absolute;
   color: white;
   align-items: center;
   justify-content: center;
@@ -196,5 +200,7 @@ input {
   right: 0;
   bottom: 0;
   left: 0;
+  padding-bottom: 75px;
   display: none;
+  font-size: 20px;
 }

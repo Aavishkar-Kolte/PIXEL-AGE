@@ -23,16 +23,12 @@ export function determineWinner(gameOverRef, HandleKeyDown, HandleKeyUp, { playe
         enemy.currentSprite = 'idle'
         player.switchSprite('idle')
         enemy.switchSprite('idle')
-
     } else if (player.health > enemy.health) {
         gameOverRef.current.innerHTML = 'Player 1 Wins';
         player.currentSprite = 'idle'
         enemy.currentSprite = 'death'
         enemy.switchSprite('death');
         player.switchSprite('idle')
-
-        
-
         enemy.dead = true;
     } else if (player.health < enemy.health) {
         gameOverRef.current.innerHTML = 'Player 2 Wins';
