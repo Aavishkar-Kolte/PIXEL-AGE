@@ -7,7 +7,7 @@ export const useSocket = () => { return React.useContext(SocketContext) }
 
 export const SocketProvider = (props) => {
 
-    const socket = useMemo(() => io('http://localhost:8001'), [])
+    const socket = useMemo(() => io('http://192.168.0.105:8001'), [])
 
     return (
         <SocketContext.Provider value={{ socket }}>

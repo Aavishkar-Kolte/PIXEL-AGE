@@ -12,7 +12,7 @@ const FightingGame = (props) => {
     const timer = useRef(null);
     const gameOver = useRef(false);
 
-    let time = useRef(60);
+    let time = useRef(180);
     let timerId = useRef()
     const establishContext = (context) => {
         setCtx(context);
@@ -299,48 +299,51 @@ const FightingGame = (props) => {
                 case 'd':
                     player.currentStatus.isMovingForward = true
                     player.currentStatus.lastMove = 'forward';
-                    // props.sendData(keys);
+                    props.sendData(player.currentStatus);
                     break;
                 case 'a':
                     player.currentStatus.isMovingBackward = true;
                     player.currentStatus.lastMove = 'backward';
-                    // props.sendData(keys);
+                    props.sendData(player.currentStatus);
                     break;
                 case 'w':
                     if (!player.currentStatus.isDefending)
                         player.currentStatus.isJumping = true;
+                    props.sendData(player.currentStatus);
                     break;
                 case ' ':
                     player.currentStatus.isAttacking = true;
+                    props.sendData(player.currentStatus);
                     break;
                 case 'k':
                     player.currentStatus.isDefending = true;
+                    props.sendData(player.currentStatus);
                     break;
             }
         }
 
-        if (!enemy.dead) {
-            switch (event.key) {
-                case 'ArrowRight':
-                    enemy.currentStatus.isMovingBackward = true;
-                    enemy.currentStatus.lastMove = 'backward';
-                    break;
-                case 'ArrowLeft':
-                    enemy.currentStatus.isMovingForward = true;
-                    enemy.currentStatus.lastMove = 'forward';
-                    break;
-                case 'ArrowUp':
-                    if (!enemy.currentStatus.isDefending)
-                        enemy.currentStatus.isJumping = true;
-                    break;
-                case 'ArrowDown':
-                    enemy.currentStatus.isAttacking = true;
-                    break;
-                case 'Enter':
-                    enemy.currentStatus.isDefending = true;
-                    break;
-            }
-        }
+        // if (!enemy.dead) {
+        //     switch (event.key) {
+        //         case 'ArrowRight':
+        //             enemy.currentStatus.isMovingBackward = true;
+        //             enemy.currentStatus.lastMove = 'backward';
+        //             break;
+        //         case 'ArrowLeft':
+        //             enemy.currentStatus.isMovingForward = true;
+        //             enemy.currentStatus.lastMove = 'forward';
+        //             break;
+        //         case 'ArrowUp':
+        //             if (!enemy.currentStatus.isDefending)
+        //                 enemy.currentStatus.isJumping = true;
+        //             break;
+        //         case 'ArrowDown':
+        //             enemy.currentStatus.isAttacking = true;
+        //             break;
+        //         case 'Enter':
+        //             enemy.currentStatus.isDefending = true;
+        //             break;
+        //     }
+        // }
     }
 
     function HandleKeyUp(event) {
@@ -349,27 +352,30 @@ const FightingGame = (props) => {
         switch (event.key) {
             case 'd':
                 player.currentStatus.isMovingForward = false;
+                props.sendData(player.currentStatus);
                 break;
             case 'a':
                 player.currentStatus.isMovingBackward = false;
+                props.sendData(player.currentStatus);
                 break;
             case 'k':
                 player.currentStatus.isDefending = false;
+                props.sendData(player.currentStatus);
                 break;
         }
 
-        // enemy keys
-        switch (event.key) {
-            case 'ArrowRight':
-                enemy.currentStatus.isMovingBackward = false;
-                break
-            case 'ArrowLeft':
-                enemy.currentStatus.isMovingForward = false;
-                break
-            case 'Enter':
-                enemy.currentStatus.isDefending = false;
-                break
-        }
+        // // enemy keys
+        // switch (event.key) {
+        //     case 'ArrowRight':
+        //         enemy.currentStatus.isMovingBackward = false;
+        //         break
+        //     case 'ArrowLeft':
+        //         enemy.currentStatus.isMovingForward = false;
+        //         break
+        //     case 'Enter':
+        //         enemy.currentStatus.isDefending = false;
+        //         break
+        // }
     }
 
     window.addEventListener('keydown', HandleKeyDown);
@@ -396,15 +402,14 @@ const FightingGame = (props) => {
         decreaseTimer();
     }, []);
 
-    let opKeys = {};
-
-
 
 
     const draw = () => {
         if (ctx) {
-
-            // opKeys = props.opKeys();
+          
+            enemy.currentStatus = props.opKeys();
+            console.log(enemy.currentStatus)
+    
 
             ctx.fillStyle = "black";
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -669,7 +674,7 @@ const FightingGame = (props) => {
             <div>
                 <div className="div1">
 
-                    <p ref={timer} className="timer"> 60 </p>
+                    <p ref={timer} className="timer"> 180 </p>
                     <div></div>
 
                 </div>
