@@ -6,7 +6,7 @@ import FightingGame from './FightingGame';
 
 function LobbyPage() {
    const text = useRef(null);
-   const opponentKeys = useRef(null);
+   const opponentKeys = useRef({});
    const { socket } = useSocket();
    const { name, thisPlayerId } = usePlayerInfo();
    const { Peer, createOffer, createAnswer, createPeer } = usePeer();
@@ -26,12 +26,12 @@ function LobbyPage() {
    const handlePlayerActionDataReceived = (event) => {
       const jsonStr = event.data;
       opponentKeys.current = JSON.parse(jsonStr)
-      // console.log(opponentKeys.current); 
+      console.log(opponentKeys.current); 
    }
 
    const sendPlayerActionData = (data) => {
       const jsonStr = JSON.stringify(data)
-      // console.log(jsonStr);
+      console.log(jsonStr);
       dataChannelPlayerActionData.current.send(jsonStr);
    }
 
