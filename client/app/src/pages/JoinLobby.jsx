@@ -6,7 +6,7 @@ import { usePlayerInfo } from '../providers/PlayerInfo';
 
 function JoinLobbyPage() {
     const { socket } = useSocket();
-    const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId } = usePlayerInfo();
+    const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId, setIsGameHost } = usePlayerInfo();
 
     const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ function JoinLobbyPage() {
         setName(data.name);
         setThisPlayerId(data.playerId);
         setLobbyCode(data.lobbyCode);
-        console.log(data.playerId + " " + data.name + " " + data.lobbyCode);
+        setIsGameHost(false);
         navigate(`/lobby/${data.lobbyCode}`);
     }, []);
 
