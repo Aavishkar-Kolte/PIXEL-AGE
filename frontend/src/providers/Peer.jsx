@@ -1,15 +1,10 @@
-import React, { useCallback, useEffect, useRef } from "react";
-// import { useSocket } from "./Socket";
-// import { usePlayerInfo } from "./PlayerInfo";
-
+import React, { useCallback, useRef } from "react";
 const PeerContext = React.createContext(null);
 
 export const usePeer = () => React.useContext(PeerContext);
 
 export const PeerProvider = (props) => {
     const Peer = useRef(null);
-
-
 
     // Initialize Peer and dataChannel in a useEffect
     const createPeer = useCallback((handleNegotiation, handleICECandidateEvent) => {
@@ -33,7 +28,7 @@ export const PeerProvider = (props) => {
             console.error(e);
         };
 
-        Peer.current = peer;
+         Peer.current = peer;
     }, []);
 
 

@@ -5,16 +5,16 @@ import { usePlayerInfo } from '../providers/PlayerInfo';
 
 function CreateLobbyPage() {
     const { socket } = useSocket();
-    const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId } = usePlayerInfo();
+    const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId, setIsGameHost} = usePlayerInfo();
 
     const navigate = useNavigate();
     const [isReady, setIsReady] = useState(false);
 
     const HandleCreatedLobby = useCallback((data) => {
-        console.log(data.playerId + " " + data.name + " " + data.lobbyCode);
         setLobbyCode(data.lobbyCode);
         setName(data.name);
         setThisPlayerId(data.playerId);
+        setIsGameHost(true);
         setIsReady(true);
     }, [setLobbyCode, setName, setThisPlayerId]);
 

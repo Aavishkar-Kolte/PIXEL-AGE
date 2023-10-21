@@ -3,17 +3,20 @@ import Canvas from "../components/Canvas";
 
 import { Sprite } from "../game-js/Sprite";
 import { Fighter } from "../game-js/Fighter";
-import { rectangularCollision, determineWinner } from "../game-js/Utils";
+import { determineWinnerClientSide } from "../game-js/Utils";
 
-const FightingGame = (props) => {
+const FightingGameClient = (props) => {
 
     const [ctx, setCtx] = useState(null);
     const gameOverText = useRef(null);
     const timer = useRef(null);
     const gameOver = useRef(false);
+    const playerName = useRef(props.getPlayerName())
+    const enemyName = useRef(props.getEnemyName())
+
+
 
     let time = useRef(180);
-    let timerId = useRef()
     const establishContext = (context) => {
         setCtx(context);
     };
@@ -149,7 +152,7 @@ const FightingGame = (props) => {
 
 
 
-    const player = new Fighter(ctx, {
+    let player = new Fighter(ctx, {
         position: {
             x: 80,
             y: 100
@@ -221,7 +224,7 @@ const FightingGame = (props) => {
 
 
 
-    const enemy = new Fighter(ctx, {
+    let enemy = new Fighter(ctx, {
         position: {
             x: 714,
             y: 100
@@ -290,6 +293,15 @@ const FightingGame = (props) => {
     });
 
 
+    const currentStatus = useRef({
+        lastMove: '',
+        isMovingForward: false,
+        isMovingBackward: false,
+        isJumping: false,
+        isAttacking: false,
+        isDefending: false
+    })
+
 
     function HandleKeyDown(event) {
         if (event.repeat) return;
@@ -297,27 +309,29 @@ const FightingGame = (props) => {
         if (!player.dead) {
             switch (event.key) {
                 case 'd':
-                    player.currentStatus.isMovingForward = true
-                    player.currentStatus.lastMove = 'forward';
-                    props.sendData(player.currentStatus);
+                    currentStatus.current.isMovingForward = true
+                    currentStatus.current.lastMove = 'forward';
+                    props.sendClientState(currentStatus.current);
                     break;
                 case 'a':
-                    player.currentStatus.isMovingBackward = true;
-                    player.currentStatus.lastMove = 'backward';
-                    props.sendData(player.currentStatus);
+                    currentStatus.current.isMovingBackward = true;
+                    currentStatus.current.lastMove = 'backward';
+                    props.sendClientState(currentStatus.current);
                     break;
                 case 'w':
-                    if (!player.currentStatus.isDefending)
-                        player.currentStatus.isJumping = true;
-                    props.sendData(player.currentStatus);
+                    if (!currentStatus.current.isDefending)
+                        currentStatus.current.isJumping = true;
+                    props.sendClientState(currentStatus.current);
+                    currentStatus.current.isJumping = false;
                     break;
                 case ' ':
-                    player.currentStatus.isAttacking = true;
-                    props.sendData(player.currentStatus);
+                    currentStatus.current.isAttacking = true;
+                    props.sendClientState(currentStatus.current);
+                    currentStatus.current.isAttacking = false;
                     break;
                 case 'k':
-                    player.currentStatus.isDefending = true;
-                    props.sendData(player.currentStatus);
+                    currentStatus.current.isDefending = true;
+                    props.sendClientState(currentStatus.current);
                     break;
             }
         }
@@ -328,16 +342,16 @@ const FightingGame = (props) => {
 
         switch (event.key) {
             case 'd':
-                player.currentStatus.isMovingForward = false;
-                props.sendData(player.currentStatus);
+                currentStatus.current.isMovingForward = false;
+                props.sendClientState(currentStatus.current);
                 break;
             case 'a':
-                player.currentStatus.isMovingBackward = false;
-                props.sendData(player.currentStatus);
+                currentStatus.current.isMovingBackward = false;
+                props.sendClientState(currentStatus.current);
                 break;
             case 'k':
-                player.currentStatus.isDefending = false;
-                props.sendData(player.currentStatus);
+                currentStatus.current.isDefending = false;
+                props.sendClientState(currentStatus.current);
                 break;
         }
     }
@@ -345,34 +359,75 @@ const FightingGame = (props) => {
     window.addEventListener('keydown', HandleKeyDown);
     window.addEventListener('keyup', HandleKeyUp);
 
-    const decreaseTimer = useMemo(() => {
-        return () => {
-            if (time.current > 0) {
-                timerId.current = setTimeout(() => {
-                    time.current--;
-                    if (timer.current) {
-                        timer.current.innerHTML = time.current;
-                    }
-                    decreaseTimer();
-                }, 1000);
-            }
-            else {
-                return;
-            }
-        }
-    }, [gameOverText])
+    const flag = useRef(0);
 
-    useEffect(() => {
-        decreaseTimer();
-    }, []);
+
+
+
+    const gameState = useRef({
+        player: {
+            currentStatus: enemy.currentStatus,
+            currentSprite: enemy.currentSprite,
+            position: enemy.position,
+            velocity: enemy.velocity,
+            health: enemy.health,
+            dead: enemy.dead
+        },
+        enemy: {
+            currentStatus: player.currentStatus,
+            currentSprite: player.currentSprite,
+            position: player.position,
+            velocity: player.velocity,
+            health: player.health,
+            dead: player.dead
+        },
+        time: time.current,
+        gameOver: gameOver.current,
+        winner: 'dummy'
+    });
 
 
 
     const draw = () => {
         if (ctx) {
-          
-            enemy.currentStatus = props.opKeys();
-    
+
+            let temp = props.getGameState();
+            if (temp !== null) {
+                gameState.current = temp;
+            }
+            // console.log(gameState.current)
+
+            time.current = gameState.current.time;
+            gameOver.current = gameState.current.gameOver;
+
+            player.currentStatus = gameState.current.player.currentStatus;
+            player.currentSprite = gameState.current.player.currentSprite;
+            player.health = gameState.current.player.health;
+            player.position.y = gameState.current.player.position.y;
+            player.position.x = 849 - gameState.current.player.position.x - player.width;
+            player.velocity.y = gameState.current.player.velocity.y;
+            player.velocity.x = gameState.current.player.velocity.x * -1;
+            player.dead = gameState.current.player.dead
+
+
+            enemy.currentStatus = gameState.current.enemy.currentStatus;
+            enemy.currentSprite = gameState.current.enemy.currentSprite;
+            enemy.health = gameState.current.enemy.health;
+            enemy.position.y = gameState.current.enemy.position.y;
+            enemy.position.x = 849 - gameState.current.enemy.position.x - enemy.width;
+            enemy.velocity.y = gameState.current.enemy.velocity.y;
+            enemy.velocity.x = gameState.current.enemy.velocity.x * -1;
+            enemy.dead = gameState.current.enemy.dead
+            enemyHealth.offset.x = gameState.current.enemyHealthOffsetX;
+
+
+
+            if (time.current > 0) {
+                if (timer.current) {
+                    timer.current.innerHTML = time.current;
+                }
+            }
+
 
             ctx.fillStyle = "black";
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -385,12 +440,14 @@ const FightingGame = (props) => {
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
 
-            if (gameOver.current === false || player.currentSprite === "idle" || player.currentSprite === "death") {
-                player.update();
-            }
+
 
             if (gameOver.current === false || enemy.currentSprite === "idle" || enemy.currentSprite === "death") {
                 enemy.update();
+            }
+
+            if (gameOver.current === false || player.currentSprite === "idle" || player.currentSprite === "death") {
+                player.update();
             }
 
 
@@ -431,21 +488,21 @@ const FightingGame = (props) => {
             playerHealthBar.update();
             enemyHealthBar.update();
 
+            ctx.font = "24px VT323";
+            ctx.fillStyle = "white"; 
+            ctx.fillText(playerName.current, 100, 30);
+            
+            ctx.font = "24px VT323"; 
+            ctx.fillStyle = "white"; 
+            ctx.fillText(enemyName.current, 854-ctx.measureText(enemyName.current).width-104, 30);
 
-
-            player.velocity.x = 0;
-            enemy.velocity.x = 0;
-
-
-            if (time.current <= 0) {
-                if (!gameOver.current) {
-                    determineWinner(gameOverText, HandleKeyDown, HandleKeyUp, { player, enemy, timerId: timerId.current, time: time.current });
-                    gameOver.current = true
+            if (gameOver.current === true) {
+                if (flag.current < 10) {
+                    determineWinnerClientSide(gameOverText, HandleKeyDown, HandleKeyUp, { player, playerName: playerName.current, enemy, enemyName: enemyName.current, winner: gameState.current.winner });
+                    flag.current++;
                 }
                 return;
             }
-
-
 
 
 
@@ -557,10 +614,6 @@ const FightingGame = (props) => {
 
 
 
-
-
-
-
             if (player.currentStatus.isAttacking) {
                 player.attack();
             }
@@ -572,43 +625,19 @@ const FightingGame = (props) => {
 
 
 
-            
-
-
-
-            // enemyHealth is where our player gets hit
-            if (
-                rectangularCollision({
-                    rectangle1: enemy,
-                    rectangle2: player
-                }) &&
-                enemy.currentStatus.isAttacking &&
-                enemy.framesCurrent === 2
-            ) {
-                player.takeHit();
-                enemy.currentStatus.isAttacking = false;
+            if (player.currentStatus.takeHit) {
+                player.switchSprite('takeHit');
+                player.currentStatus.takeHit = false;
             }
 
-            // detect for collision & enemy gets hit
-            if (
-                rectangularCollision({
-                    rectangle1: player,
-                    rectangle2: enemy
-                }) &&
-                player.currentStatus.isAttacking &&
-                player.framesCurrent === 2
-            ) {
-                enemy.takeHit();
-                player.currentStatus.isAttacking = false;
-                enemyHealth.offset.x = enemyHealth.image.width * enemyHealth.scale * (enemy.health / 100 - 1);
+            if (enemy.currentStatus.takeHit) {
+                enemy.switchSprite('takeHit');
+                enemy.currentStatus.takeHit = false;
             }
 
 
 
 
-
-
-            // if player misses
             if (enemy.currentStatus.isAttacking && enemy.framesCurrent === 3) {
                 enemy.currentStatus.isAttacking = false;
             }
@@ -618,20 +647,11 @@ const FightingGame = (props) => {
                 player.currentStatus.isAttacking = false;
             }
 
+            console.log("End")
 
 
-
-
-
-            // end game based on health
-            if (enemy.health <= 0 || player.health <= 0) {
-                determineWinner(gameOverText, HandleKeyDown, HandleKeyUp, { player, enemy, timerId: timerId.current, time: time.current });
-                gameOver.current = true;
-            }
-        }
-
-    };
-
+        };
+    }
 
     return (
         <div className="game-container">
@@ -651,4 +671,4 @@ const FightingGame = (props) => {
     )
 };
 
-export default FightingGame;
+export default FightingGameClient;

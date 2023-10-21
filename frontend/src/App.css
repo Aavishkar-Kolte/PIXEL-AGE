@@ -63,10 +63,10 @@
 }
 
 .homepage-container {
-  background-image: url("c:\Users\aavis\Downloads\Medieval_Castle_.png");
+  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.gif");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 100vw 100vh;
+  background-size: 100% 100%;
   /* Updated property */
   display: flex;
   align-items: center;
@@ -157,12 +157,12 @@ input {
   width: 100%;
 }
 
-.timer{
+.timer {
   width: auto;
   height: auto;
-  display: inline-block; 
+  display: inline-block;
   color: #fff;
-  font-family: 'VT323', monospace; 
+  font-family: 'VT323', monospace;
   font-size: 22px;
   font-weight: 800;
   opacity: 0.9;
@@ -192,7 +192,7 @@ input {
 .game-over-text {
   font-family: 'VT323', monospace;
   font-weight: 600;
-  position:absolute;
+  position: absolute;
   color: white;
   align-items: center;
   justify-content: center;
@@ -203,4 +203,50 @@ input {
   padding-bottom: 75px;
   display: none;
   font-size: 20px;
+}
+
+
+.game-and-chat-container {
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.embed-submit-field {
+  position: relative;
+}
+
+.embed-submit-field  input {
+  width: 100%;
+  padding: 10px 60px 10px 20px;
+}
+
+.embed-submit-field button {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+
+  border: 1px solid black;
+  background: #ededed;
+  border-radius: 2px;
+  padding: 5px;
+
+  transition: all .2s;
+
+  &:hover {
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
+canvas{
+  border-radius: 5px;
 }

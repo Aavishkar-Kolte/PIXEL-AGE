@@ -28,7 +28,7 @@ const Canvas = (props) => {
             const canvas = canvasRef.current;
             const ctx = canvas.getContext("2d");
             setContext(ctx);
-            // resizeCanvas(ctx);
+            resizeCanvas(ctx);
             if (establishContext) {
                 establishContext(ctx);
             }

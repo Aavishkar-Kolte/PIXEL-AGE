@@ -44,7 +44,8 @@ export class Fighter extends Sprite {
             isMovingBackward: false,
             isJumping: false,
             isAttacking: false,
-            isDefending: false
+            isDefending: false,
+            takeHit: false
         }
 
         this.dead = false
@@ -62,7 +63,7 @@ export class Fighter extends Sprite {
 
     draw() {
 
-        if (this.isImageLoaded) { 
+        if (this.isImageLoaded) {
             this.ctx.drawImage(
                 this.image,
                 this.framesCurrent * (this.image.width / this.framesMax),
@@ -78,13 +79,14 @@ export class Fighter extends Sprite {
     }
 
     animateFrames() {
+
         this.framesElapsed++;
 
         if (this.framesElapsed % this.sprites[this.currentSprite].framesHold === 0) {
 
-            if (this.framesCurrent < this.framesMax - 1) {
-                this.framesCurrent++;
-            } else if (!this.isJumping ) {
+            if (!(this.dead && this.framesCurrent === this.framesMax - 1) && this.framesCurrent < this.framesMax - 1) {
+                    this.framesCurrent++;
+            } else if (!this.isJumping || !this.dead) {
                 this.framesCurrent = 0;
             }
         }
@@ -136,12 +138,12 @@ export class Fighter extends Sprite {
                 this.switchSprite('death');
             } else this.switchSprite('takeHit')
         }
-
-
-
     }
 
     switchSprite(sprite) {
+        if(this.dead){
+            return
+        }
         if (this.image === this.sprites.death.image) {
             if (this.framesCurrent === this.sprites.death.framesMax - 1)
                 this.dead = true
@@ -225,6 +227,7 @@ export class Fighter extends Sprite {
 
             case 'death':
                 if (this.image !== this.sprites.death.image) {
+                    console.log(this.image.src, " -> " ,this.framesCurrent, " ", this.currentSprite)
                     this.image = this.sprites.death.image
                     this.framesMax = this.sprites.death.framesMax
                     this.framesCurrent = 0
