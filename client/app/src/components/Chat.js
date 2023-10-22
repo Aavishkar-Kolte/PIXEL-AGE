@@ -5,7 +5,6 @@ import styled from "styled-components";
 const Messages = styled.div`
     width: 100%;
     height: 60%;
-    border: 1px solid black;
     margin-top: 10px;
     overflow: scroll;
     overflow-x: hidden;
@@ -13,6 +12,13 @@ const Messages = styled.div`
     padding: 5px;
     margin: 10px;
     box-sizing: border-box;
+    background: #efdfc200;
+  background-color: rgba(235, 223, 200,0.6);
+  gap: 20px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  box-shadow: 4px 4px var(--main-color);
+  align-items: center;
 `;
 
 const Container = styled.div`
@@ -26,6 +32,19 @@ const Container = styled.div`
     border-radius: 5px;
     padding: 10px;
     margin: 10px;
+    --input-focus: #2d8cf0;
+  --font-color: #221301;
+  --font-color-sub: #666;
+  --bg-color: #ebdfc8;
+  --main-color: #221301;
+  padding: 20px;
+  background: #efdfc200;
+  background-color: rgba(235, 223, 200,0.5);
+  gap: 20px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  box-shadow: 4px 4px var(--main-color);
+  align-items: center;
 `;
 
 const MyRow = styled.div`
