@@ -1,7 +1,8 @@
 .App {
   text-align: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .8);
 }
 
 * {
@@ -63,10 +64,11 @@
 }
 
 .homepage-container {
-  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.gif");
+  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.jpg");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 100% 100%;
+  background-size: 90% 90%;
+  background-color: rgba(0, 0, 0, .8);
   /* Updated property */
   display: flex;
   align-items: center;
@@ -81,45 +83,52 @@
 }
 
 .createlobbypage-container {
-  width: 100vw;
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-}
+  width: 100%;
+  height: 100vh;
+  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90% 90%;
+  background-color: rgba(0, 0, 0, .8);
+  display: flex;
 
-.createlobbypage-container div {
-  padding: 20px;
-}
-
-input {
-  display: block;
-  width: 225px;
-  box-sizing: border-box;
-  border: 1px solid #000;
-  border-radius: 4px;
-  /* box-shadow: #fff 4px 4px 0 0,#000 4px 4px 0 1px; */
-  font-family: ITCAvantGardeStd-Bk, Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  margin: 0 5px 10px 0;
-  overflow: visible;
-  padding: 12px 40px;
-  text-align: center;
 }
 
 .joinlobbypage-container {
-  width: 100vw;
-  height: 100vh;
+  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90% 90%;
+  background-color: rgba(0, 0, 0, .8);
+  /* Updated property */
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.lobbypage-container {
+  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90% 90%;
+  background-color: rgba(0, 0, 0, .8);
+  /* Updated property */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
 }
 
 .game-container {
   position: relative;
-  display: inline-block
+  display: inline-block;
+  
 }
 
 .div1 {
@@ -211,6 +220,7 @@ input {
   justify-content: flex-start;
   box-sizing: border-box;
   padding: 10px;
+  width: 100%;
 }
 
 
@@ -223,7 +233,7 @@ input {
   position: relative;
 }
 
-.embed-submit-field  input {
+.embed-submit-field input {
   width: 100%;
   padding: 10px 60px 10px 20px;
 }
@@ -247,6 +257,200 @@ input {
   }
 }
 
-canvas{
+canvas {
   border-radius: 5px;
+}
+
+
+
+.form-div {
+  --input-focus: #2d8cf0;
+  --font-color: #221301;
+  --font-color-sub: #666;
+  --bg-color: #ebdfc8;
+  --main-color: #221301;
+  padding: 20px;
+  background: #efdfc200;
+  background-color: rgba(235, 223, 200, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  box-shadow: 4px 4px var(--main-color);
+  align-items: center;
+}
+
+.title {
+  color: var(--font-color);
+  font-weight: 900;
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+
+.title span {
+  color: var(--font-color-sub);
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.input {
+  width: 250px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--font-color);
+  padding: 5px 10px;
+  outline: none;
+}
+
+input {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 225px;
+  box-sizing: border-box;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--font-color);
+  padding: 5px 10px;
+  outline: none;
+}
+
+
+.input::placeholder {
+  color: var(--font-color-sub);
+  opacity: 0.8;
+}
+
+.input:focus {
+  border: 2px solid var(--input-focus);
+}
+
+.login-with {
+  display: flex;
+  gap: 20px;
+}
+
+.button-log {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  color: var(--font-color);
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  fill: var(--main-color);
+}
+
+.button-log:active,
+.button-confirm:active {
+  box-shadow: 0px 0px var(--main-color);
+  transform: translate(3px, 3px);
+}
+
+.button-confirm {
+  margin: 10px auto 5 auto;
+  width: 225px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--font-color);
+  cursor: pointer;
+}
+
+
+
+.header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  width: 100%;
+  height: 75px;
+  justify-content: space-between;
+}
+
+.logo {
+  color: #ebdfc8;
+  margin: 40px 5px 5px 90px;
+
+}
+
+h1 {
+  font-size: 26px;
+  color: var(--font-color);
+  margin: 0;
+  font-weight: bold;
+}
+
+
+#header-option {
+  margin: 40px 90px 5px 5px;
+  padding: 0;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  color: #ebdfc8;
+  font-family: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  position: relative;
+  border: none;
+  background: none;
+  text-transform: uppercase;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-duration: 400ms;
+  transition-property: color;
+}
+
+#header-option:focus,
+#header-option:hover {
+  color: #ebdfc8;
+}
+
+#header-option:focus:after,
+#header-option:hover:after {
+  width: 100%;
+  left: 0%;
+}
+
+#header-option:after {
+  content: "";
+  pointer-events: none;
+  bottom: -2px;
+  left: 50%;
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #ebdfc8;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-duration: 400ms;
+  transition-property: width, left;
 }

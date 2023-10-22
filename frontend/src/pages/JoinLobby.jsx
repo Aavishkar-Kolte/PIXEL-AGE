@@ -30,11 +30,15 @@ function JoinLobbyPage() {
 
     return (
         <div className='joinlobbypage-container'>
-            <div>
-                <h1>Join lobby</h1>
+            <div className='header'>
+                <h1 className='logo'>PIXLE-AGE</h1>
+                <button id='header-option'>Developer</button>
+
+            </div>
+            <div class="form-div">
                 <input type="text" placeholder="Enter username" value={name} onChange={e => { setName(e.target.value) }} />
                 <input type="text" placeholder="Enter lobby code" value={lobbyCode} onChange={e => { setLobbyCode(e.target.value) }} />
-                <button className="button-50" onClick={() => { socket.emit("join-lobby", { name, lobbyCode }) }}> Join Lobby </button>
+                <button className="button-confirm" onClick={() => { socket.emit("join-lobby", { name, lobbyCode }) }}> Join Lobby </button>
             </div>
         </div>
     )

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import Canvas from "../components/Canvas";
-
 import { Sprite } from "../game-js/Sprite";
 import { Fighter } from "../game-js/Fighter";
 import { rectangularCollision, determineWinner } from "../game-js/Utils";
@@ -13,29 +12,20 @@ const FightingGameHost = (props) => {
     const gameOver = useRef(false);
     const playerName = useRef(props.getPlayerName())
     const enemyName = useRef(props.getEnemyName())
-
     const winner = useRef(null);
-
     let time = useRef(180);
     let timerId = useRef()
+
     const establishContext = (context) => {
         setCtx(context);
     };
 
 
+
+    // Player healthbar sprite
     const playerHealthBar = new Sprite(ctx, {
         position: {
             x: 85,
-            y: 34
-        },
-        imageSrc: '../img/bar.png',
-        scale: 2.6,
-        framesMax: 1
-    });
-
-    const enemyHealthBar = new Sprite(ctx, {
-        position: {
-            x: 460,
             y: 34
         },
         imageSrc: '../img/bar.png',
@@ -53,32 +43,12 @@ const FightingGameHost = (props) => {
         framesMax: 1
     });
 
-    const enemyHealthBarBG = new Sprite(ctx, {
-        position: {
-            x: 490,
-            y: 41
-        },
-        imageSrc: '../img/bar_background.png',
-        scale: 2.6,
-        framesMax: 1
-    });
-
     const playerHealth = new Sprite(ctx, {
         position: {
             x: 110,
             y: 42
         },
         imageSrc: '../img/health_bar_flipped.png',
-        scale: 2.6,
-        framesMax: 1
-    });
-
-    const enemyHealth = new Sprite(ctx, {
-        position: {
-            x: 482,
-            y: 42
-        },
-        imageSrc: '../img/health_bar.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -90,6 +60,39 @@ const FightingGameHost = (props) => {
         },
         imageSrc: '../img/weapon_icon_flipped.png',
         scale: 1.3,
+        framesMax: 1
+    });
+
+
+
+    // Enemy healthbar sprite
+    const enemyHealthBar = new Sprite(ctx, {
+        position: {
+            x: 460,
+            y: 34
+        },
+        imageSrc: '../img/bar.png',
+        scale: 2.6,
+        framesMax: 1
+    });
+
+    const enemyHealthBarBG = new Sprite(ctx, {
+        position: {
+            x: 490,
+            y: 41
+        },
+        imageSrc: '../img/bar_background.png',
+        scale: 2.6,
+        framesMax: 1
+    });
+
+    const enemyHealth = new Sprite(ctx, {
+        position: {
+            x: 482,
+            y: 42
+        },
+        imageSrc: '../img/health_bar.png',
+        scale: 2.6,
         framesMax: 1
     });
 
@@ -106,8 +109,7 @@ const FightingGameHost = (props) => {
 
 
 
-
-
+    // Background sprite
     const background = new Sprite(ctx, {
         position: {
             x: 0,
@@ -119,6 +121,7 @@ const FightingGameHost = (props) => {
     });
 
 
+    // Torch and candle sprites
     const torch1 = new Sprite(ctx, {
         position: {
             x: 670,
@@ -139,7 +142,6 @@ const FightingGameHost = (props) => {
         framesMax: 6
     });
 
-
     const tallCandle = new Sprite(ctx, {
         position: {
             x: 413,
@@ -152,8 +154,7 @@ const FightingGameHost = (props) => {
 
 
 
-
-
+    // Player Sprite
     const player = new Fighter(ctx, {
         position: {
             x: 80,
@@ -223,9 +224,7 @@ const FightingGameHost = (props) => {
     });
 
 
-
-
-
+    // Enemy sprite
     const enemy = new Fighter(ctx, {
         position: {
             x: 714,
@@ -297,7 +296,7 @@ const FightingGameHost = (props) => {
 
 
     function HandleKeyDown(event) {
-        if (event.repeat) return;
+        if (event.repeat) return; // Executes keydown only once
 
         if (!player.dead) {
             switch (event.key) {
@@ -324,7 +323,7 @@ const FightingGameHost = (props) => {
     }
 
     function HandleKeyUp(event) {
-        if (event.repeat) return;
+        if (event.repeat) return; // Executes keyup only once
 
         switch (event.key) {
             case 'd':
@@ -342,6 +341,7 @@ const FightingGameHost = (props) => {
     window.addEventListener('keydown', HandleKeyDown);
     window.addEventListener('keyup', HandleKeyUp);
 
+    // Game timer
     const decreaseTimer = useMemo(() => {
         return () => {
             if (time.current > 0 && gameOver.current === false) {
@@ -363,8 +363,8 @@ const FightingGameHost = (props) => {
         decreaseTimer();
     }, []);
 
-    const playerHealthOffsetX = useRef(playerHealth.offset.x)
 
+    const playerHealthOffsetX = useRef(playerHealth.offset.x)
 
     enemy.currentStatus = {
         lastMove: '',
@@ -374,7 +374,6 @@ const FightingGameHost = (props) => {
         isAttacking: false,
         isDefending: false
     }
-
 
     const gameState = useRef({
         player: {
@@ -399,8 +398,6 @@ const FightingGameHost = (props) => {
 
 
 
-
-
     const draw = () => {
         if (ctx) {
 
@@ -418,8 +415,8 @@ const FightingGameHost = (props) => {
             torch2.update();
             tallCandle.update()
 
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            // ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            // ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
 
             if (gameOver.current === false || enemy.currentSprite === "idle" || enemy.currentSprite === "death") {
@@ -487,11 +484,35 @@ const FightingGameHost = (props) => {
                 if (!gameOver.current) {
                     winner.current = determineWinner(gameOverText, HandleKeyDown, HandleKeyUp, { player, playerName: playerName.current, enemy, enemyName: enemyName.current, timerId: timerId.current, time: time.current });
                     gameOver.current = true
-                    console.log("hello");
+                    // console.log("hello");
+                } else {
+                    gameState.current = {
+                        player: {
+                            currentStatus: enemy.currentStatus,
+                            currentSprite: enemy.currentSprite,
+                            position: enemy.position,
+                            velocity: enemy.velocity,
+                            health: enemy.health,
+                            dead: enemy.dead
+                        },
+                        enemy: {
+                            currentStatus: player.currentStatus,
+                            currentSprite: player.currentSprite,
+                            position: player.position,
+                            velocity: player.velocity,
+                            health: player.health,
+                            dead: player.dead
+                        },
+                        enemyHealthOffsetX: playerHealthOffsetX.current,
+                        time: time.current,
+                        gameOver: gameOver.current,
+                        winner: winner.current
+                    }
+    
+                    gameState.current.gameOver = true;
+                    gameState.current.winner = winner.current;
+                    props.sendGameState(gameState.current);
                 }
-                gameState.current.gameOver = true;
-                gameState.current.winner = winner.current;
-                props.sendGameState(gameState.current);
                 return;
             }
 
@@ -505,14 +526,16 @@ const FightingGameHost = (props) => {
                     enemy.velocity.x = -2;
                 } else {
                     enemy.velocity.x = -5;
-                    enemy.switchSprite('run');
+                    if(!enemy.isAttacking)
+                    enemy.switchSprite({sprite: 'run'});
                 }
             } else if (enemy.currentStatus.isMovingBackward && enemy.currentStatus.lastMove === 'backward' && enemy.position.x < 795) {
                 if (enemy.currentStatus.isDefending) {
                     enemy.velocity.x = 2
                 } else {
                     enemy.velocity.x = 5;
-                    enemy.switchSprite('run');
+                    if(!enemy.isAttacking)
+                    enemy.switchSprite({sprite: 'run'});
                 }
             }
 
@@ -523,9 +546,9 @@ const FightingGameHost = (props) => {
 
             // jumping
             if (enemy.velocity.y < 0) {
-                enemy.switchSprite('jump');
+                enemy.switchSprite({sprite: 'jump'});
             } else if (enemy.velocity.y > 0) {
-                enemy.switchSprite('fall');
+                enemy.switchSprite({sprite: 'fall'});
             }
 
             if (enemy.position.y <= 105 && !(enemy.velocity.y > 0)) {
@@ -533,7 +556,7 @@ const FightingGameHost = (props) => {
             }
 
             if (enemy.currentStatus.isAttacking === false && enemy.velocity.y === 0 && enemy.velocity.x === 0 && !enemy.currentStatus.isJumping) {
-                enemy.switchSprite('idle');
+                enemy.switchSprite({sprite: 'idle'});
             }
 
             if (enemy.velocity.y === 0) {
@@ -554,14 +577,16 @@ const FightingGameHost = (props) => {
                     player.velocity.x = -2;
                 } else {
                     player.velocity.x = -5;
-                    player.switchSprite('run');
+                    if(!player.isAttacking)
+                    player.switchSprite({sprite: 'run'});
                 }
             } else if (player.currentStatus.isMovingForward && player.currentStatus.lastMove === 'forward' && player.position.x < 780) {
                 if (player.currentStatus.isDefending) {
                     player.velocity.x = 2;
                 } else {
                     player.velocity.x = 5;
-                    player.switchSprite('run');
+                    if(!player.isAttacking)
+                    player.switchSprite({sprite: 'run'});
                 }
             }
 
@@ -572,9 +597,9 @@ const FightingGameHost = (props) => {
 
             // jumping
             if (player.velocity.y < 0) {
-                player.switchSprite('jump');
+                player.switchSprite({sprite: 'jump'});
             } else if (player.velocity.y > 0) {
-                player.switchSprite('fall');
+                player.switchSprite({sprite: 'fall'});
             }
 
             if (player.position.y <= 105 && !(player.velocity.y > 0)) {
@@ -582,7 +607,7 @@ const FightingGameHost = (props) => {
             }
 
             if (player.currentStatus.isAttacking === false && player.velocity.y === 0 && player.velocity.x === 0 && !player.currentStatus.isJumping) {
-                player.switchSprite('idle');
+                player.switchSprite({sprite: 'idle'});
             }
 
             if (player.velocity.y === 0) {
@@ -596,12 +621,12 @@ const FightingGameHost = (props) => {
 
 
             if (enemy.currentStatus.isDefending) {
-                enemy.switchSprite('defend')
+                enemy.switchSprite({sprite: 'defend'})
                 if (enemy.velocity.y < 0) enemy.velocity.y = 0;
             }
 
             if (player.currentStatus.isDefending) {
-                player.switchSprite('defend')
+                player.switchSprite({sprite: 'defend'})
                 if (player.velocity.y < 0) player.velocity.y = 0;
             }
 
@@ -710,16 +735,12 @@ const FightingGameHost = (props) => {
             <div className="game-container">
 
                 <div className="div1">
-
                     <p ref={timer} className="timer"> 180 </p>
                     <div> </div>
-
                 </div>
 
                 <div ref={gameOverText} className="game-over-text"> Tie </div>
                 <Canvas draw={draw} establishContext={establishContext} w="854px" h="480px" />
-
-
             </div>
         </div>
 
