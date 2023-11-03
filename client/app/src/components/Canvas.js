@@ -28,12 +28,13 @@ const Canvas = (props) => {
             const canvas = canvasRef.current;
             const ctx = canvas.getContext("2d");
             setContext(ctx);
-            resizeCanvas(ctx);
+            canvas.width = 854*0.8;
+            canvas.height = 480*0.8;
+            ctx.scale(0.8, 0.8);
             if (establishContext) {
                 establishContext(ctx);
             }
-            canvas.width = 854;
-            canvas.height = 480;
+            
         }
     }, []);
 
@@ -54,7 +55,7 @@ const Canvas = (props) => {
         };
     }, [draw, context, resizeCanvas]);
     
-    return <canvas ref={canvasRef} {...rest} style={{ backgroundColor: "#000", width: w, height:h }} />;
+    return <canvas ref={canvasRef} style={{ backgroundColor: "#000" }} />;
 };
 
 export default Canvas;

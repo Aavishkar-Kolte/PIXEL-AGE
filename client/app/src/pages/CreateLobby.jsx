@@ -36,14 +36,14 @@ function CreateLobbyPage() {
         <div className='createlobbypage-container'>
             <div>
                 <div className='header'>
-                    <h1 className='logo'>PIXLE-AGE</h1>
-                    <button id='header-option'>Developer</button>
+                    <h1 className='logo'>PIXEL-AGE</h1>
+                    <button id='header-option'>DEVELOPER</button>
 
                 </div>
                 <div className='form-div'>
                      {/* <h1>CREATE LOBBY</h1> */}
                      <input type="text" placeholder="Enter Username" value={name} onChange={e => { setName(e.target.value) }} />
-                    <button className="button-confirm" onClick={() => { socket.emit("create-lobby", { name }) }}> CREATE LOBBY </button>
+                    <button className="button-confirm" onClick={() => { socket.emit("create-lobby", { name }) }}> CREATE-LOBBY </button>
                 </div>  
             </div>
         </div>

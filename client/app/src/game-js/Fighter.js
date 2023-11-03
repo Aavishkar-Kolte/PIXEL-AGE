@@ -80,7 +80,7 @@ export class Fighter extends Sprite {
         if (this.framesElapsed % this.sprites[this.currentSprite].framesHold === 0) {
 
             if (!(this.dead && this.framesCurrent === this.framesMax - 1) && this.framesCurrent < this.framesMax - 1) {
-                    this.framesCurrent++;
+                this.framesCurrent++;
             } else if (!this.isJumping || !this.dead) {
                 this.framesCurrent = 0;
             }
@@ -89,10 +89,10 @@ export class Fighter extends Sprite {
 
     update() {
         this.draw()
-        if (!(this.dead && this.framesCurrent === 5)){
+        if (!(this.dead && this.framesCurrent === 5)) {
             console.log(this.dead, " -> ", this.framesCurrent)
             this.animateFrames()
-        } 
+        }
 
         // attack boxes
         this.attackBox.position.x = this.position.x + this.attackBox.offset.x
@@ -113,14 +113,14 @@ export class Fighter extends Sprite {
         this.position.y += this.velocity.y
 
         // gravity function
-        if (this.position.y + this.height + this.velocity.y >= this.ctx.canvas.height - 81) {
+        if (this.position.y + this.height + this.velocity.y >= this.ctx.canvas.height + 15) {
             this.velocity.y = 0
         } else this.velocity.y += gravity;
     }
 
     attack() {
         if (!this.currentStatus.isDefending) {
-            this.switchSprite({sprite: 'attack1'});
+            this.switchSprite({ sprite: 'attack1' });
         }
     }
 
@@ -128,18 +128,18 @@ export class Fighter extends Sprite {
         if (this.currentStatus.isDefending) {
             this.health -= 2.5;
             if (this.health <= 0) {
-                this.switchSprite({sprite: 'death'});
+                this.switchSprite({ sprite: 'death' });
             }
         } else {
             this.health -= 10;
             if (this.health <= 0) {
-                this.switchSprite({sprite: 'death'});
-            } else this.switchSprite({sprite: 'takeHit'})
+                this.switchSprite({ sprite: 'death' });
+            } else this.switchSprite({ sprite: 'takeHit' })
         }
     }
 
     switchSprite({ sprite, gameOver = false }) {
-        if(this.dead){
+        if (this.dead) {
             return
         }
 
@@ -150,13 +150,13 @@ export class Fighter extends Sprite {
             return
 
         // overriding all other animations with the attack animation
-        if (!gameOver && (this.currentStatus.isAttacking || this.framesCurrent < this.framesMax-1) && this.image === this.sprites.attack1.image ){
-        //    console.log("IF: ", this.image.src, " - ", this.sprites.attack1.image.src, this.framesCurrent) ;
+        if (!gameOver && (this.currentStatus.isAttacking || this.framesCurrent < this.framesMax - 1) && this.image === this.sprites.attack1.image) {
+            //    console.log("IF: ", this.image.src, " - ", this.sprites.attack1.image.src, this.framesCurrent) ;
             return;
         } else {
             // console.log("ELSE: ", this.image.src, " - ", this.sprites.attack1.image.src, this.framesCurrent);
         }
-            
+
 
         // override when fighter gets hit
         if (

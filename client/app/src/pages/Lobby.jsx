@@ -8,17 +8,17 @@ import styled from "styled-components";
 import { Chat } from '../components/Chat';
 
 const GameContainer = styled.div`
-    min-width:854px;
-    height: 100%;
-    float: left;
-    padding: 10px
+   min-width:684px;
+   height: auto;
+   float: left;
+   padding: 10px
 `;
 
 function LobbyPage() {
    const clientState = useRef(null);
    const gameState = useRef(null);
    const { socket } = useSocket();
-   const { name, thisPlayerId, isGameHost } = usePlayerInfo();
+   const { lobbyCode, name, thisPlayerId, isGameHost } = usePlayerInfo();
    const { Peer, createOffer, createAnswer, createPeer } = usePeer();
    const dataChannelMessages = useRef(null);
    const dataChannelGameStateData = useRef(null);
@@ -27,6 +27,13 @@ function LobbyPage() {
    const opponentPlayerName = useRef(name);
    const messages = useRef([]);
    const [start, setStart] = useState(false);
+
+
+   // useEffect(() => {
+   //    return () => {
+   //       socket.emit("delete-log", {playerId: thisPlayerId});
+   //    }
+   // }, [])
 
 
 
@@ -44,7 +51,7 @@ function LobbyPage() {
 
    function sendMessage(text) {
       if (dataChannelMessages.current.readyState === "open") {
-         if (text.current.value != '') {
+         if (text.current.value !== '') {
             dataChannelMessages.current.send(text.current.value);
             messages.current = [...messages.current, { yours: true, value: text.current.value }];
             text.current.value = '';
@@ -207,7 +214,8 @@ function LobbyPage() {
          socket.off("connection-request-accepted", handleConnectionRequestAccepted);
          socket.off("ice-candidate", handleNewICECandidateMsg);
       };
-   }, [socket, handleNewPlayerJoined, handleConnectionRequest, handleConnectionRequestAccepted, handleNewICECandidateMsg]);
+   }, [socket]);
+
 
 
    useEffect(() => {
@@ -224,10 +232,17 @@ function LobbyPage() {
                {start ? (isGameHost
                   ? <FightingGameHost sendGameState={sendGameState} getClientState={getClientState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />
                   : <FightingGameClient sendClientState={sendClientState} getGameState={getGameState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />)
-                  : <h1>Wait</h1>
+                  : <div><h1>LOBBY CODE: {lobbyCode}</h1><h2>Share this code with other player</h2><h2>Please wait for another player to join...</h2></div>
                }
+               <div className='ad1'>
+
+               </div>
             </GameContainer>
-            <Chat getMessages={getMessages} sendMessage={sendMessage} />
+            <div className='chatbox-ad-div'>
+               <Chat getMessages={getMessages} sendMessage={sendMessage} />
+               <div className='ad2'></div>
+            </div>
+
          </div>
       </div>
    );
