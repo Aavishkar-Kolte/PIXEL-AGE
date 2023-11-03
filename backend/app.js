@@ -1,10 +1,12 @@
+require('dotenv').config();
 const express = require("express");
 const { Server } = require("socket.io");
+const http = require("http")
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-const PORT = 8000;
+const PORT = process.env.PORT;
 const corsOptions = {
     origin: "*",
     methods: "GET,POST",
@@ -12,14 +14,18 @@ const corsOptions = {
 };
 
 const app = express();
-const io = new Server({
+app.use(cors(corsOptions));
+const server = http.createServer(app)
+
+const io = new Server(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"],
     },
 });
 
-mongoose.connect("mongodb://127.0.0.1:27017/game")
+
+mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log("MongoDB Connected.");
     })
@@ -27,7 +33,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/game")
         console.log("Mongo Error " + err);
     });
 
-app.use(cors(corsOptions));
+app.use(express.static('public'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -40,7 +46,6 @@ const playerSchema = new mongoose.Schema(
         socketId: {
             type: String,
             required: true,
-            unique: true,
         },
         lobbyCode: {
             type: String,
@@ -77,13 +82,15 @@ io.on("connection", (socket) => {
         let length = 4;
         let code = "";
 
-        for (let i = 0; i < length; i++) {
-            const randomIndex = Math.floor(Math.random() * characters.length);
-            code += characters.charAt(randomIndex);
-        }
-        console.log(code + " - " + data.name);
-
-        // code validation code
+        do{
+            code = "";
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                code += characters.charAt(randomIndex);
+            }
+            console.log(code + " - " + data.name);
+        }while(await Player.findOne({ lobbyCode: code }) !== null);
+        
 
         const newPlayer = await Player.create({
             playerName: data.name,
@@ -100,6 +107,9 @@ io.on("connection", (socket) => {
             lobbyCode: code,
             playerId: newPlayer._id,
         });
+        setTimeout(() => {
+            Player.deleteOne({ _id: newPlayer._id }).then(e => console.log("deleted",e, newPlayer._id)).catch(e => console.log("error", e));
+        }, 600000)
     });
 
     socket.on("join-lobby", async (data) => {
@@ -133,6 +143,9 @@ io.on("connection", (socket) => {
                     });
 
                 await Player.updateOne({ _id: players[0]._id }, { lobbyIsOpen: false });
+                setTimeout(() => {
+                    Player.deleteOne({ _id: newPlayer._id }).then(e => console.log("deleted",e, newPlayer._id)).catch(e => console.log("error", e));
+                }, 600000)
             }
         }
     });
@@ -161,10 +174,16 @@ io.on("connection", (socket) => {
         io.to(toPlayer.socketId).emit("ice-candidate", data.candidate);
     });
 
+    socket.on("delete-log", (data) => {
+        const { playerId } = data;
+        Player.deleteOne({ _id: playerId }).then(e => console.log("deleted",e, playerId)).catch(e => console.log("error", e));
+    });
 
 });
 
+app.get('/', (req, res) => {
+    res.sendFile(__dirname+"/public/index.html");
+})
 
 
-app.listen(PORT, () => { console.log(`Server is running on port ${PORT}`) });
-io.listen(8001);
+server.listen(PORT, () => { console.log(`Server is running on port ${PORT}`) });

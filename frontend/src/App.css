@@ -73,7 +73,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
 }
 
@@ -172,7 +172,7 @@
   display: inline-block;
   color: #fff;
   font-family: 'VT323', monospace;
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 800;
   opacity: 0.9;
   /* border-style: solid; */
@@ -211,7 +211,7 @@
   left: 0;
   padding-bottom: 75px;
   display: none;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 
@@ -220,7 +220,8 @@
   justify-content: flex-start;
   box-sizing: border-box;
   padding: 10px;
-  width: 100%;
+  width: 90%;
+  height: 90%;
 }
 
 
@@ -231,30 +232,18 @@
 
 .embed-submit-field {
   position: relative;
+  display: flex;
 }
 
 .embed-submit-field input {
   width: 100%;
-  padding: 10px 60px 10px 20px;
+  padding: 10px 15px;
+  margin: 5px;
 }
 
-.embed-submit-field button {
-  position: absolute;
-  right: 10px;
-  top: 8px;
-
-  border: 1px solid black;
-  background: #ededed;
-  border-radius: 2px;
-  padding: 5px;
-
-  transition: all .2s;
-
-  &:hover {
-    background-color: #000;
-    color: #fff;
-    cursor: pointer;
-  }
+#send{
+  width: 60px;
+  margin: 5px;
 }
 
 canvas {
@@ -289,6 +278,8 @@ canvas {
   font-size: 20px;
   margin-bottom: 25px;
 }
+
+
 
 .title span {
   color: var(--font-color-sub);
@@ -405,7 +396,14 @@ input {
 
 h1 {
   font-size: 26px;
-  color: var(--font-color);
+  color: #ebdfc8;
+  margin: 0;
+  font-weight: bold;
+}
+
+h2{
+  font-size: 18px;
+  color: #ebdfc8;
   margin: 0;
   font-weight: bold;
 }
@@ -453,4 +451,29 @@ h1 {
   transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
   transition-duration: 400ms;
   transition-property: width, left;
+}
+
+.game-tutorial{
+  width: 100%;
+  background-color: rgba(0, 0, 0, .8);
+  height: 100vh;
+}
+
+.ad1 {
+  color: #000;
+  height: 90px;
+  width: 100%;
+}
+
+.ad2{
+  color: #000;
+  height: 100%;
+  width: auto;
+}
+
+.chatbox-ad-div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
 }

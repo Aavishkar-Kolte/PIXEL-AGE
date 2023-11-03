@@ -11,12 +11,12 @@ export const PeerProvider = (props) => {
         const peer = new RTCPeerConnection({
             iceServers: [
                 {
-                    urls: "stun:stun.stunprotocol.org",
+                    urls: "stun:stun.l.google.com:19302",
                 },
                 {
-                    urls: 'turn:numb.viagenie.ca',
-                    credential: 'muazkh',
-                    username: 'webrtc@live.com',
+                    urls: 'TURN:freestun.net:3479',
+                    credential: 'free',
+                    username: 'free',
                 },
             ],
         });
