@@ -9,9 +9,14 @@ import { Chat } from '../components/Chat';
 
 const GameContainer = styled.div`
    min-width:684px;
-   height: auto;
+   height: 408px;
+   box-sizing: border-box;
    float: left;
-   padding: 10px
+   padding: 10px;
+   display: flex;
+   border-radius: 10px;
+   background-color: rgb(0,0,0,0.75);
+   gap: 10px
 `;
 
 function LobbyPage() {
@@ -229,27 +234,31 @@ function LobbyPage() {
       <div className='lobbypage-container'>
          <div className='game-and-chat-container'>
             <GameContainer>
-               {start ? (isGameHost
-                  ? <FightingGameHost sendGameState={sendGameState} getClientState={getClientState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />
-                  : <FightingGameClient sendClientState={sendClientState} getGameState={getGameState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />)
-                  : <div><h1>LOBBY CODE: {lobbyCode}</h1><h2>Share this code with other player</h2><h2>Please wait for another player to join...</h2></div>
-               }
+               <div>
+                  {start ? (isGameHost
+                     ? <FightingGameHost sendGameState={sendGameState} getClientState={getClientState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />
+                     : <FightingGameClient sendClientState={sendClientState} getGameState={getGameState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />)
+                     : <div style={{minWidth:"683px", minHeight:"388px"}}><h1>LOBBY CODE: {lobbyCode}</h1><h2>Share this code with other player</h2><h2>Please wait for another player to join...</h2></div>
+                  }
+               </div>
+               <div className='chatbox-ad-div'>
+                  <Chat getMessages={getMessages} sendMessage={sendMessage} />
+               </div>
+            </GameContainer>
+            <div className='ads-div'>
                <div className='ad1'>
 
                </div>
-            </GameContainer>
-            <div className='chatbox-ad-div'>
-               <Chat getMessages={getMessages} sendMessage={sendMessage} />
-               <div className='ad2'></div>
-            </div>
+               <div className='ad1'>
 
+               </div>
+            </div>
          </div>
       </div>
    );
 }
 
 export default LobbyPage;
-
 
 
 

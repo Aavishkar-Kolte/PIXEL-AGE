@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 const corsOptions = {
     origin: "*",
     methods: "GET,POST",
@@ -24,8 +24,8 @@ const io = new Server(server, {
     },
 });
 
-
-mongoose.connect(process.env.MONGO_URI)
+// mongoose.connect(process.env.MONGO_URI)
+mongoose.connect("mongodb://127.0.0.1:27017/game")
     .then(() => {
         console.log("MongoDB Connected.");
     })
@@ -49,6 +49,10 @@ const playerSchema = new mongoose.Schema(
         },
         lobbyCode: {
             type: String,
+            required: true,
+        },
+        lobbyIsPrivate: {
+            type: Boolean,
             required: true,
         },
         lobbyIsOpen: {
@@ -82,20 +86,21 @@ io.on("connection", (socket) => {
         let length = 4;
         let code = "";
 
-        do{
+        do {
             code = "";
             for (let i = 0; i < length; i++) {
                 const randomIndex = Math.floor(Math.random() * characters.length);
                 code += characters.charAt(randomIndex);
             }
             console.log(code + " - " + data.name);
-        }while(await Player.findOne({ lobbyCode: code }) !== null);
-        
+        } while (await Player.findOne({ lobbyCode: code }) !== null);
+
 
         const newPlayer = await Player.create({
             playerName: data.name,
             socketId: socket.id,
             lobbyCode: code,
+            lobbyIsPrivate: false,
             lobbyIsOpen: true,
         });
 
@@ -108,7 +113,7 @@ io.on("connection", (socket) => {
             playerId: newPlayer._id,
         });
         setTimeout(() => {
-            Player.deleteOne({ _id: newPlayer._id }).then(e => console.log("deleted",e, newPlayer._id)).catch(e => console.log("error", e));
+            Player.deleteOne({ _id: newPlayer._id }).then(e => console.log("deleted", e, newPlayer._id)).catch(e => console.log("error", e));
         }, 600000)
     });
 
@@ -125,6 +130,7 @@ io.on("connection", (socket) => {
                     playerName: data.name,
                     socketId: socket.id,
                     lobbyCode: data.lobbyCode,
+                    lobbyIsPrivate: false,
                     lobbyIsOpen: false,
                 });
                 newPlayer.save();
@@ -144,12 +150,83 @@ io.on("connection", (socket) => {
 
                 await Player.updateOne({ _id: players[0]._id }, { lobbyIsOpen: false });
                 setTimeout(() => {
-                    Player.deleteOne({ _id: newPlayer._id }).then(e => console.log("deleted",e, newPlayer._id)).catch(e => console.log("error", e));
+                    Player.deleteOne({ _id: newPlayer._id }).then(e => console.log("deleted", e, newPlayer._id)).catch(e => console.log("error", e));
                 }, 600000)
             }
         }
     });
 
+    socket.on("play-online", async (data) => {
+        console.log(data)
+        const player = await Player.findOne({ lobbyIsPrivate: false, lobbyIsOpen: true });
+        console.log(player)
+
+        if (player) {
+
+            const newPlayer = new Player({
+                playerName: data.name,
+                socketId: socket.id,
+                lobbyCode: player.lobbyCode,
+                lobbyIsPrivate: true,
+                lobbyIsOpen: false,
+            });
+            newPlayer.save();
+
+            socket.join(player.lobbyCode);
+            socket.emit("joined-lobby", {
+                name: data.name,
+                lobbyCode: player.lobbyCode,
+                playerId: newPlayer._id,
+            });
+
+            socket.broadcast
+                .to(player.lobbyCode)
+                .emit("new-player-joined", {
+                    name: data.name,
+                    playerId: newPlayer._id,
+                });
+
+            await Player.updateOne({ _id: player._id }, { lobbyIsOpen: false });
+            setTimeout(() => {
+                Player.deleteOne({ _id: newPlayer._id }).then(e => console.log("deleted", e, newPlayer._id)).catch(e => console.log("error", e));
+            }, 600000)
+
+        } else {
+            const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let length = 4;
+            let code = "";
+
+            do {
+                code = "";
+                for (let i = 0; i < length; i++) {
+                    const randomIndex = Math.floor(Math.random() * characters.length);
+                    code += characters.charAt(randomIndex);
+                }
+                console.log(code + " - " + data.name);
+            } while (await Player.findOne({ lobbyCode: code }) !== null);
+
+
+            const newPlayer = await Player.create({
+                playerName: data.name,
+                socketId: socket.id,
+                lobbyCode: code,
+                lobbyIsPrivate: false,
+                lobbyIsOpen: true,
+            });
+
+            newPlayer.save();
+
+            socket.join(code);
+            socket.emit("created-lobby", {
+                name: data.name,
+                lobbyCode: code,
+                playerId: newPlayer._id,
+            });
+            setTimeout(() => {
+                Player.deleteOne({ _id: newPlayer._id }).then(e => console.log("deleted", e, newPlayer._id)).catch(e => console.log("error", e));
+            }, 600000)
+        }
+    });
 
 
     socket.on("connection-request", async (data) => {
@@ -176,13 +253,13 @@ io.on("connection", (socket) => {
 
     socket.on("delete-log", (data) => {
         const { playerId } = data;
-        Player.deleteOne({ _id: playerId }).then(e => console.log("deleted",e, playerId)).catch(e => console.log("error", e));
+        Player.deleteOne({ _id: playerId }).then(e => console.log("deleted", e, playerId)).catch(e => console.log("error", e));
     });
 
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname+"/public/index.html");
+    res.sendFile(__dirname + "/public/index.html");
 })
 
 

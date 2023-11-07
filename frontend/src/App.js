@@ -6,9 +6,9 @@ import CreateLobbyPage from './pages/CreateLobby';
 import JoinLobbyPage from './pages/JoinLobby';
 import { SocketProvider } from './providers/Socket';
 import LobbyPage from './pages/Lobby';
-import FightingGame from './pages/FightingGame';
 import { PlayerProvider } from './providers/PlayerInfo';
 import { PeerProvider } from './providers/Peer';
+import PlayOnlinePage from './pages/PlayOnline';
 
 function App() {
   return (
@@ -21,12 +21,12 @@ function App() {
               <Route path="/create-lobby" element={<CreateLobbyPage />} />
               <Route path="/join-lobby" element={<JoinLobbyPage />} />
               <Route path='/lobby/:lobbyCode' element={<LobbyPage />} />
-              <Route path="/play" element={<FightingGame />} />
+              <Route path="/play-online" element={<PlayOnlinePage />} />
+              <Route path="/about" element={<PlayOnlinePage />} />
             </Routes>
           </PeerProvider>
         </PlayerProvider>
       </SocketProvider>
-
     </div>
   );
 }
