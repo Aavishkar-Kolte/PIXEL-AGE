@@ -1,3 +1,5 @@
+
+
 .App {
   text-align: center;
   width: 100%;
@@ -128,7 +130,7 @@
 .game-container {
   position: relative;
   display: inline-block;
-  
+
 }
 
 .div1 {
@@ -217,11 +219,13 @@
 
 .game-and-chat-container {
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   box-sizing: border-box;
   padding: 10px;
   width: 90%;
   height: 90%;
+  gap: 10px;
 }
 
 
@@ -239,6 +243,11 @@
   width: 100%;
   padding: 10px 15px;
   margin: 5px;
+}
+.ads-div{
+  height: 100%;
+  display: flex;
+  gap: 10px;
 }
 
 #send{
@@ -461,7 +470,7 @@ h2{
 
 .ad1 {
   color: #000;
-  height: 90px;
+  height: 100%;
   width: 100%;
 }
 
@@ -473,7 +482,5 @@ h2{
 
 .chatbox-ad-div{
   width: 100%;
-  display: flex;
-  flex-direction: column;
-
+  height: 100%;
 }

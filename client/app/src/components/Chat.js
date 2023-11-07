@@ -22,17 +22,15 @@ const Messages = styled.div`
 `;
 
 const Container = styled.div`
-    height: 50vh;
-    width:auto;
-    margin: auto;
+    height: 100%;
+    box-sizing: border-box;
+    width: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     border: 1px solid black;
     border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
     --input-focus: #2d8cf0;
     --font-color: #221301;
     --font-color-sub: #666;
@@ -43,7 +41,7 @@ const Container = styled.div`
     background-color: rgba(235, 223, 200,0.5);
     border-radius: 5px;
     border: 2px solid var(--main-color);
-    box-shadow: 4px 4px var(--main-color);
+    box-shadow: 0px 2px var(--main-color);
     align-items: center;
 `;
 
@@ -144,7 +142,8 @@ export const Chat = (props) => {
         )
     }
     return (
-        <Container>
+        <div style={{padding:"0px 0px 4px 0px", height:"100%",boxSizing:"border-box"}}>
+            <Container>
             <Messages ref={messagesContainer}>
                 {messages.map(renderMessage)}
             </Messages>
@@ -156,5 +155,6 @@ export const Chat = (props) => {
                 </div>
             </div>
         </Container>
+        </div>
     )
 }
