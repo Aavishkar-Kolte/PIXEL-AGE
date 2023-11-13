@@ -396,6 +396,8 @@ const FightingGameHost = (props) => {
         winner: "test"
     });
 
+    const count = useRef(0);
+
 
 
     const draw = () => {
@@ -706,8 +708,11 @@ const FightingGameHost = (props) => {
                 gameOver: gameOver.current,
                 winner: winner.current
             }
-
+            
             props.sendGameState(gameState.current);
+       
+
+            count.current++;
 
             player.currentStatus.takeHit = false;
             enemy.currentStatus.takeHit = false;

@@ -381,6 +381,8 @@ const FightingGameClient = (props) => {
         winner: 'dummy'
     });
 
+    const prevPlayerPosition = useRef({ x: player.position.x, y: player.position.y });
+    const prevEnemyPosition = useRef({ x: enemy.position.x, y: enemy.position.y });
 
 
     const draw = () => {
@@ -391,7 +393,7 @@ const FightingGameClient = (props) => {
             if (temp !== null) {
                 gameState.current = temp;
             }
-            // console.log(gameState.current)
+            console.log(gameState.current)
 
             time.current = gameState.current.time;
             gameOver.current = gameState.current.gameOver;
@@ -400,20 +402,28 @@ const FightingGameClient = (props) => {
             player.currentStatus = gameState.current.player.currentStatus;
             player.currentSprite = gameState.current.player.currentSprite;
             player.health = gameState.current.player.health;
-            player.position.y = gameState.current.player.position.y;
-            player.position.x = 849 - gameState.current.player.position.x - player.width;
-            player.velocity.y = gameState.current.player.velocity.y;
-            player.velocity.x = gameState.current.player.velocity.x * -1;
+
+            if (prevPlayerPosition.current !== gameState.current.player.position) {
+                player.position.y = gameState.current.player.position.y;
+                player.position.x = 849 - gameState.current.player.position.x - player.width;
+                player.velocity.y = gameState.current.player.velocity.y;
+                player.velocity.x = gameState.current.player.velocity.x * -1;
+            }
+
             player.dead = gameState.current.player.dead
 
 
             enemy.currentStatus = gameState.current.enemy.currentStatus;
             enemy.currentSprite = gameState.current.enemy.currentSprite;
             enemy.health = gameState.current.enemy.health;
-            enemy.position.y = gameState.current.enemy.position.y;
-            enemy.position.x = 849 - gameState.current.enemy.position.x - enemy.width;
-            enemy.velocity.y = gameState.current.enemy.velocity.y;
-            enemy.velocity.x = gameState.current.enemy.velocity.x * -1;
+
+            if(prevEnemyPosition.current !== gameState.current.enemy.position){
+                enemy.position.y = gameState.current.enemy.position.y;
+                enemy.position.x = 849 - gameState.current.enemy.position.x - enemy.width;
+                enemy.velocity.y = gameState.current.enemy.velocity.y;
+                enemy.velocity.x = gameState.current.enemy.velocity.x * -1;
+            }
+
             enemy.dead = gameState.current.enemy.dead
             enemyHealth.offset.x = gameState.current.enemyHealthOffsetX;
 
@@ -521,14 +531,14 @@ const FightingGameClient = (props) => {
                     enemy.velocity.x = -2;
                 } else {
                     enemy.velocity.x = -5;
-                    enemy.switchSprite({sprite: 'run'});
+                    enemy.switchSprite({ sprite: 'run' });
                 }
             } else if (enemy.currentStatus.isMovingBackward && enemy.currentStatus.lastMove === 'backward' && enemy.position.x < 795) {
                 if (enemy.currentStatus.isDefending) {
                     enemy.velocity.x = 2
                 } else {
                     enemy.velocity.x = 5;
-                    enemy.switchSprite({sprite: 'run'});
+                    enemy.switchSprite({ sprite: 'run' });
                 }
             }
 
@@ -539,9 +549,9 @@ const FightingGameClient = (props) => {
 
             // jumping
             if (enemy.velocity.y < 0) {
-                enemy.switchSprite({sprite: 'jump'});
+                enemy.switchSprite({ sprite: 'jump' });
             } else if (enemy.velocity.y > 0) {
-                enemy.switchSprite({sprite: 'fall'});
+                enemy.switchSprite({ sprite: 'fall' });
             }
 
             if (enemy.position.y <= 105 && !(enemy.velocity.y > 0)) {
@@ -549,7 +559,7 @@ const FightingGameClient = (props) => {
             }
 
             if (enemy.currentStatus.isAttacking === false && enemy.velocity.y === 0 && enemy.velocity.x === 0 && !enemy.currentStatus.isJumping) {
-                enemy.switchSprite({sprite: 'idle'});
+                enemy.switchSprite({ sprite: 'idle' });
             }
 
             if (enemy.velocity.y === 0) {
@@ -567,14 +577,14 @@ const FightingGameClient = (props) => {
                     player.velocity.x = -2;
                 } else {
                     player.velocity.x = -5;
-                    player.switchSprite({sprite: 'run'});
+                    player.switchSprite({ sprite: 'run' });
                 }
             } else if (player.currentStatus.isMovingForward && player.currentStatus.lastMove === 'forward' && player.position.x < 780) {
                 if (player.currentStatus.isDefending) {
                     player.velocity.x = 2;
                 } else {
                     player.velocity.x = 5;
-                    player.switchSprite({sprite: 'run'});
+                    player.switchSprite({ sprite: 'run' });
                 }
             }
 
@@ -585,9 +595,9 @@ const FightingGameClient = (props) => {
 
             // jumping
             if (player.velocity.y < 0) {
-                player.switchSprite({sprite: 'jump'});
+                player.switchSprite({ sprite: 'jump' });
             } else if (player.velocity.y > 0) {
-                player.switchSprite({sprite: 'fall'});
+                player.switchSprite({ sprite: 'fall' });
             }
 
             if (player.position.y <= 105 && !(player.velocity.y > 0)) {
@@ -595,7 +605,7 @@ const FightingGameClient = (props) => {
             }
 
             if (player.currentStatus.isAttacking === false && player.velocity.y === 0 && player.velocity.x === 0 && !player.currentStatus.isJumping) {
-                player.switchSprite({sprite: 'idle'});
+                player.switchSprite({ sprite: 'idle' });
             }
 
             if (player.velocity.y === 0) {
@@ -609,12 +619,12 @@ const FightingGameClient = (props) => {
 
 
             if (enemy.currentStatus.isDefending) {
-                enemy.switchSprite({sprite: 'defend'})
+                enemy.switchSprite({ sprite: 'defend' })
                 if (enemy.velocity.y < 0) enemy.velocity.y = 0;
             }
 
             if (player.currentStatus.isDefending) {
-                player.switchSprite({sprite: 'defend'})
+                player.switchSprite({ sprite: 'defend' })
                 if (player.velocity.y < 0) player.velocity.y = 0;
             }
 
@@ -632,12 +642,12 @@ const FightingGameClient = (props) => {
 
 
             if (player.currentStatus.takeHit) {
-                player.switchSprite({sprite: 'takeHit'});
+                player.switchSprite({ sprite: 'takeHit' });
                 player.currentStatus.takeHit = false;
             }
 
             if (enemy.currentStatus.takeHit) {
-                enemy.switchSprite({sprite: 'takeHit'});
+                enemy.switchSprite({ sprite: 'takeHit' });
                 enemy.currentStatus.takeHit = false;
             }
 
@@ -654,10 +664,13 @@ const FightingGameClient = (props) => {
             }
 
             // console.log("End")
+            prevPlayerPosition.current = gameState.current.player.position;
+            prevEnemyPosition.current = gameState.current.enemy.position;
 
 
         };
     }
+
 
     return (
         <div className="game-container">

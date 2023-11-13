@@ -5,7 +5,7 @@ import { usePlayerInfo } from '../providers/PlayerInfo';
 
 function PlayOnlinePage() {
     const { socket } = useSocket();
-    const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId, setIsGameHost } = usePlayerInfo();
+    const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId, setIsGameHost, setIsPlayOnline} = usePlayerInfo();
 
     const navigate = useNavigate();
     const [isReady, setIsReady] = useState(false);
@@ -23,6 +23,7 @@ function PlayOnlinePage() {
         setThisPlayerId(data.playerId);
         setLobbyCode(data.lobbyCode);
         setIsGameHost(false);
+        setIsPlayOnline(true);
         navigate(`/lobby/${data.lobbyCode}`);
     }, []);
 
@@ -38,6 +39,7 @@ function PlayOnlinePage() {
 
     useEffect(() => {
         if (isReady) {
+            setIsPlayOnline(true);
             navigate(`/lobby/${lobbyCode}`);
         }
     }, [isReady, setLobbyCode, navigate]);
@@ -47,13 +49,13 @@ function PlayOnlinePage() {
             <div>
                 <div className='header'>
                     <h1 className='logo'>PIXEL-AGE</h1>
-                    <button id='header-option' onClick={() => { navigate("../about") }} >DEVELOPER</button>
+                    <button id='header-option' onClick={() => { navigate("../about") }} >ABOUT</button>
 
                 </div>
                 <div className='form-div'>
-                     {/* <h1>CREATE LOBBY</h1> */}
-                     <input type="text" placeholder="Enter Username" value={name} onChange={e => { setName(e.target.value) }} />
+                     <input type="text" placeholder="player name" value={name} onChange={e => { setName(e.target.value) }} />
                     <button className="button-confirm" onClick={() => { socket.emit("play-online", { name }) }}> PLAY </button>
+                    <h3 id='home-vp-text'>2-PLAYER ONLINE GAME THAT YOU CAN PLAY WITH YOUR FRIENDS.</h3>
                 </div>  
             </div>
         </div>

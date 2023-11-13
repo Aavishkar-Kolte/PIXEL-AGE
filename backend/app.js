@@ -255,12 +255,15 @@ io.on("connection", (socket) => {
         const { playerId } = data;
         Player.deleteOne({ _id: playerId }).then(e => console.log("deleted", e, playerId)).catch(e => console.log("error", e));
     });
-
+    
 });
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + "/public/index.html");
 })
 
+app.get('/*', (req, res) => {
+    res.redirect('/');
+})
 
 server.listen(PORT, () => { console.log(`Server is running on port ${PORT}`) });
