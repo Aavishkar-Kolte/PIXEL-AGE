@@ -9,6 +9,7 @@ import LobbyPage from './pages/Lobby';
 import { PlayerProvider } from './providers/PlayerInfo';
 import { PeerProvider } from './providers/Peer';
 import PlayOnlinePage from './pages/PlayOnline';
+import AboutPage from './pages/About';
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
               <Route path="/join-lobby" element={<JoinLobbyPage />} />
               <Route path='/lobby/:lobbyCode' element={<LobbyPage />} />
               <Route path="/play-online" element={<PlayOnlinePage />} />
-              <Route path="/about" element={<PlayOnlinePage />} />
+              <Route path="/about" element={<AboutPage />} />
             </Routes>
           </PeerProvider>
         </PlayerProvider>

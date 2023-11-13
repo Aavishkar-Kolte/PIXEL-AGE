@@ -32,13 +32,14 @@ function JoinLobbyPage() {
         <div className='joinlobbypage-container'>
             <div className='header'>
                 <h1 className='logo'>PIXEL-AGE</h1>
-                <button id='header-option' onClick={() => { navigate("../about") }} >DEVELOPER</button>
+                <button id='header-option' onClick={() => { navigate("../about") }} >ABOUT</button>
 
             </div>
             <div class="form-div">
-                <input type="text" placeholder="Enter Username" value={name} onChange={e => { setName(e.target.value) }} />
-                <input type="text" placeholder="Enter Lobby Code" value={lobbyCode} onChange={e => { setLobbyCode(e.target.value) }} />
+                <input type="text" placeholder="player name" value={name} onChange={e => { setName(e.target.value) }} />
+                <input type="text" placeholder="lobby code" value={lobbyCode} onChange={e => { setLobbyCode(e.target.value) }} />
                 <button className="button-confirm" onClick={() => { socket.emit("join-lobby", { name, lobbyCode }) }}> JOIN-LOBBY </button>
+                <h3 id='home-vp-text'>2-PLAYER ONLINE GAME THAT YOU CAN PLAY WITH YOUR FRIENDS.</h3>
             </div>
         </div>
     )

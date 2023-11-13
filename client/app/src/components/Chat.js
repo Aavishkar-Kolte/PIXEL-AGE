@@ -142,19 +142,19 @@ export const Chat = (props) => {
         )
     }
     return (
-        <div style={{padding:"0px 0px 4px 0px", height:"100%",boxSizing:"border-box"}}>
+        <div id="chat-div">
             <Container>
-            <Messages ref={messagesContainer}>
-                {messages.map(renderMessage)}
-            </Messages>
+                <Messages ref={messagesContainer}>
+                    {messages.map(renderMessage)}
+                </Messages>
 
-            <div class="container">
-                <div class="embed-submit-field">
-                    <input ref={text} type="text" placeholder="Enter message" />
-                    <button className="button-confirm" id="send" onClick={() => { props.sendMessage(text) }}>Send</button>
+                <div class="message-input-div">
+                    <div class="embed-submit-field">
+                        <input ref={text} type="text" placeholder="Enter message" />
+                        <button className="button-confirm" id="send" onClick={() => { props.sendMessage(text) }}>Send</button>
+                    </div>
                 </div>
-            </div>
-        </Container>
+            </Container>
         </div>
     )
 }

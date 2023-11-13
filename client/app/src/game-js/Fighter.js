@@ -90,7 +90,7 @@ export class Fighter extends Sprite {
     update() {
         this.draw()
         if (!(this.dead && this.framesCurrent === 5)) {
-            console.log(this.dead, " -> ", this.framesCurrent)
+            // console.log(this.dead, " -> ", this.framesCurrent)
             this.animateFrames()
         }
 

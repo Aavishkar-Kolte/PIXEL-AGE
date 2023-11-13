@@ -9,10 +9,11 @@ export const PlayerProvider = (props) => {
     const [name, setName] = useState('');
     const [thisPlayerId, setThisPlayerId] = useState('');
     const [isGameHost, setIsGameHost]= useState(null);
+    const [isPlayOnline, setIsPlayOnline]= useState(false);
     
 
     return (
-        <PlayerContext.Provider value={{ lobbyCode, setLobbyCode, name, setName, thisPlayerId, setThisPlayerId, isGameHost, setIsGameHost}}>
+        <PlayerContext.Provider value={{ lobbyCode, setLobbyCode, name, setName, thisPlayerId, setThisPlayerId, isGameHost, setIsGameHost, isPlayOnline, setIsPlayOnline}}>
             {props.children}
         </PlayerContext.Provider>
     )
