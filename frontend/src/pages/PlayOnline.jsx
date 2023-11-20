@@ -5,10 +5,14 @@ import { usePlayerInfo } from '../providers/PlayerInfo';
 
 function PlayOnlinePage() {
     const { socket } = useSocket();
-    const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId, setIsGameHost, setIsPlayOnline} = usePlayerInfo();
-
+    const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId, setIsGameHost, setIsPlayOnline } = usePlayerInfo();
     const navigate = useNavigate();
     const [isReady, setIsReady] = useState(false);
+    
+    useEffect(() => {
+        setLobbyCode("")
+        setName("")
+    }, [])
 
     const HandleCreatedLobby = useCallback((data) => {
         setLobbyCode(data.lobbyCode);
@@ -44,6 +48,15 @@ function PlayOnlinePage() {
         }
     }, [isReady, setLobbyCode, navigate]);
 
+
+    const handleSubmit = () => {
+        if (name != "") {
+            socket.emit("play-online", { name })
+        } else {
+            alert("Please enter a valid player name. The field cannot be left empty.")
+        }
+    }
+
     return (
         <div className='createlobbypage-container'>
             <div>
@@ -53,10 +66,10 @@ function PlayOnlinePage() {
 
                 </div>
                 <div className='form-div'>
-                     <input type="text" placeholder="player name" value={name} onChange={e => { setName(e.target.value) }} />
-                    <button className="button-confirm" onClick={() => { socket.emit("play-online", { name }) }}> PLAY </button>
+                    <input type="text" placeholder="player name" value={name} onChange={e => { if (e.target.value.length <= 15) setName(e.target.value); }} />
+                    <button className="button-confirm" onClick={handleSubmit}> PLAY </button>
                     <h3 id='home-vp-text'>2-PLAYER ONLINE GAME THAT YOU CAN PLAY WITH YOUR FRIENDS.</h3>
-                </div>  
+                </div>
             </div>
         </div>
     )

@@ -65,10 +65,12 @@ function HomePage() {
                             <h5>When you press the 'k' key to defend, your character enters a fortified stance, reducing incoming damage by 75%. However, this increased defense comes at a cost – your movement speed decreases by 75%, and you temporarily lose the ability to attack. Use this defensive move strategically to withstand powerful enemy attacks.</h5>
                         </div>
                     </div>
+                    <br></br>
+                    <br></br>
 
-                    <div className='ad-home'>
+                    {/* <div className='ad-home'>
 
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <footer className='footer'>

@@ -123,7 +123,7 @@ io.on("connection", (socket) => {
         console.log(players);
 
 
-        if (players.length === 1) {
+        if (players.length > 0) {
             if (players[0].lobbyIsOpen) {
 
                 const newPlayer = new Player({
@@ -153,6 +153,8 @@ io.on("connection", (socket) => {
                     Player.deleteOne({ _id: newPlayer._id }).then(e => console.log("deleted", e, newPlayer._id)).catch(e => console.log("error", e));
                 }, 600000)
             }
+        } else {
+            socket.emit("lobby-not-found", {lobbyCode : data.lobbyCode});
         }
     });
 

@@ -8,6 +8,11 @@ function JoinLobbyPage() {
     const { socket } = useSocket();
     const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId, setIsGameHost } = usePlayerInfo();
 
+    useEffect(() => {
+        setLobbyCode("")
+        setName("")
+    }, [])
+
     const navigate = useNavigate();
 
 
@@ -21,11 +26,33 @@ function JoinLobbyPage() {
 
     useEffect(() => {
         socket.on("joined-lobby", HandleJoinedLobby);
+        socket.on("lobby-not-found", (data) => {
+            console.log("not found");
+            alert(`Could not find lobby with lobby code: ${data.lobbyCode}. Please try again`);
+        });
+
 
         return () => {
             socket.off("joined-lobby", HandleJoinedLobby);
+            socket.off("lobby-not-found", (data) => {
+                alert(`Could not find lobby with lobby code: ${data.lobbyCode}. Please try again.`)
+            });
         }
     }, [socket, HandleJoinedLobby])
+
+    const handleSubmit = () => {
+        if (name != "" && lobbyCode != "") {
+            socket.emit("join-lobby", { name, lobbyCode });
+        } else if (name == "" && lobbyCode == "") {
+            alert("Please fill out all the fields.")
+        } else {
+            if (name == "") {
+                alert("Please enter a valid player name. The field cannot be left empty.")
+            } else if (lobbyCode == "") {
+                alert("Please enter a valid lobby code. The field cannot be left empty.")
+            }
+        }
+    }
 
 
     return (
@@ -36,9 +63,9 @@ function JoinLobbyPage() {
 
             </div>
             <div class="form-div">
-                <input type="text" placeholder="player name" value={name} onChange={e => { setName(e.target.value) }} />
-                <input type="text" placeholder="lobby code" value={lobbyCode} onChange={e => { setLobbyCode(e.target.value) }} />
-                <button className="button-confirm" onClick={() => { socket.emit("join-lobby", { name, lobbyCode }) }}> JOIN-LOBBY </button>
+                <input type="text" placeholder="player name" value={name} onChange={e => { if (e.target.value.length <= 15) setName(e.target.value); }} />
+                <input type="text" placeholder="lobby code" value={lobbyCode} onChange={e => { if (e.target.value.length <= 4) setLobbyCode(e.target.value) }} />
+                <button className="button-confirm" onClick={handleSubmit}> JOIN-LOBBY </button>
                 <h3 id='home-vp-text'>2-PLAYER ONLINE GAME THAT YOU CAN PLAY WITH YOUR FRIENDS.</h3>
             </div>
         </div>
