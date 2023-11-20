@@ -7,6 +7,11 @@ function CreateLobbyPage() {
     const { socket } = useSocket();
     const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId, setIsGameHost } = usePlayerInfo();
 
+    useEffect(() => {
+        setLobbyCode("")
+        setName("")
+    }, [])
+
     const navigate = useNavigate();
     const [isReady, setIsReady] = useState(false);
 
@@ -32,6 +37,14 @@ function CreateLobbyPage() {
         }
     }, [isReady, setLobbyCode, navigate]);
 
+    const handleSubmit = () => {
+        if (name != "") {
+            socket.emit("create-lobby", { name });
+        } else {
+            alert("Please enter a valid player name. The field cannot be left empty.")
+        }
+    }
+
     return (
         <div className='createlobbypage-container'>
             <div>
@@ -41,8 +54,8 @@ function CreateLobbyPage() {
 
                 </div>
                 <div className='form-div'>
-                    <input type="text" placeholder="player name" value={name} onChange={e => { setName(e.target.value) }} />
-                    <button className="button-confirm" onClick={() => { socket.emit("create-lobby", { name }) }}> CREATE-LOBBY </button>
+                    <input type="text" placeholder="player name" value={name} onChange={e => { if (e.target.value.length <= 15) setName(e.target.value); }} />
+                    <button className="button-confirm" onClick={handleSubmit}> CREATE-LOBBY </button>
                     <h3 id='home-vp-text'>2-PLAYER ONLINE GAME THAT YOU CAN PLAY WITH YOUR FRIENDS.</h3>
                 </div>
             </div>

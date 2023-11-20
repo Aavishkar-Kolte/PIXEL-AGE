@@ -10,8 +10,10 @@ const FightingGameClient = (props) => {
     const gameOverText = useRef(null);
     const timer = useRef(null);
     const gameOver = useRef(false);
-    const playerName = useRef(props.getPlayerName())
-    const enemyName = useRef(props.getEnemyName())
+    let tempStr = props.getPlayerName();
+    const playerName = useRef(tempStr.charAt(0).toUpperCase() + tempStr.slice(1).toLowerCase())
+    tempStr = props.getEnemyName();
+    const enemyName = useRef(tempStr.charAt(0).toUpperCase() + tempStr.slice(1).toLowerCase())
     let time = useRef(180);
 
     const establishContext = (context) => {
@@ -23,8 +25,8 @@ const FightingGameClient = (props) => {
     // Player healthbar sprite
     const playerHealthBar = new Sprite(ctx, {
         position: {
-            x: 85,
-            y: 34
+            x: 90,
+            y: 37
         },
         imageSrc: '../img/bar.png',
         scale: 2.6,
@@ -33,8 +35,8 @@ const FightingGameClient = (props) => {
 
     const playerHealthBarBG = new Sprite(ctx, {
         position: {
-            x: 110,
-            y: 41
+            x: 115,
+            y: 44
         },
         imageSrc: '../img/bar_background.png',
         scale: 2.6,
@@ -43,8 +45,8 @@ const FightingGameClient = (props) => {
 
     const playerHealth = new Sprite(ctx, {
         position: {
-            x: 110,
-            y: 42
+            x: 115,
+            y: 45
         },
         imageSrc: '../img/health_bar_flipped.png',
         scale: 2.6,
@@ -53,11 +55,11 @@ const FightingGameClient = (props) => {
 
     const playerWeaponIcon = new Sprite(ctx, {
         position: {
-            x: 25,
-            y: 15
+            x: 0,
+            y: 0
         },
         imageSrc: '../img/weapon_icon_flipped.png',
-        scale: 1.3,
+        scale: 2,
         framesMax: 1
     });
 
@@ -66,8 +68,8 @@ const FightingGameClient = (props) => {
     // Enemy healthbar sprite
     const enemyHealthBar = new Sprite(ctx, {
         position: {
-            x: 460,
-            y: 34
+            x: 455,
+            y: 37
         },
         imageSrc: '../img/bar.png',
         scale: 2.6,
@@ -76,8 +78,8 @@ const FightingGameClient = (props) => {
 
     const enemyHealthBarBG = new Sprite(ctx, {
         position: {
-            x: 490,
-            y: 41
+            x: 485,
+            y: 44
         },
         imageSrc: '../img/bar_background.png',
         scale: 2.6,
@@ -86,8 +88,8 @@ const FightingGameClient = (props) => {
 
     const enemyHealth = new Sprite(ctx, {
         position: {
-            x: 482,
-            y: 42
+            x: 477,
+            y: 45
         },
         imageSrc: '../img/health_bar.png',
         scale: 2.6,
@@ -96,11 +98,11 @@ const FightingGameClient = (props) => {
 
     const enemyWeaponIcon = new Sprite(ctx, {
         position: {
-            x: 754,
-            y: 15
+            x: 740,
+            y: 0
         },
         imageSrc: '../img/weapon_icon.png',
-        scale: 1.3,
+        scale: 2,
         framesMax: 1
     });
 
@@ -499,13 +501,12 @@ const FightingGameClient = (props) => {
             playerHealthBar.update();
             enemyHealthBar.update();
 
-            ctx.font = "24px VT323";
+            ctx.font = "26px Papyrus";
             ctx.fillStyle = "white";
-            ctx.fillText(playerName.current, 100, 30);
+            ctx.fillText(playerName.current, 115, 31);
 
-            ctx.font = "24px VT323";
             ctx.fillStyle = "white";
-            ctx.fillText(enemyName.current, 854 - ctx.measureText(enemyName.current).width - 104, 30);
+            ctx.fillText(enemyName.current, 854 - ctx.measureText(enemyName.current).width - 114, 31);
 
             // if (gameOver.current === true) {
             //     if (flag.current < 10) {

@@ -216,11 +216,11 @@ input {
   height: auto;
   display: inline-block;
   color: #fff;
-  font-family: 'VT323', monospace;
-  font-size: 16px;
+  font-family: "Papyrus";
+  font-size: 18px;
   font-weight: 800;
   opacity: 0.9;
-  padding: 25px 20px 3px 20px;
+  padding: 25px 20px 3px 18px;
 
 }
 
@@ -242,8 +242,8 @@ input {
 }
 
 .game-over-text {
-  font-family: 'VT323', monospace;
-  font-weight: 600;
+  font-family: "Papyrus";
+  font-weight: 500;
   position: absolute;
   color: white;
   align-items: center;
@@ -254,7 +254,7 @@ input {
   left: 0;
   padding-bottom: 75px;
   display: none;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 #game-and-chat-container {
@@ -464,7 +464,6 @@ input {
 
 .ad1 {
   color: #000;
-  height: 70px;
   width: 100%;
   background-color: #ffffff17;
   margin: 5px 0px;
