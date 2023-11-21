@@ -42,6 +42,11 @@
 - It's an unfair game. Because the game calculations are all done on one player's system in a P2P architecture, that player experiences nearly no latency, while the other player experiences noticeably higher latency based on the packet routes and geographical distance between the two players.
 - The game is not very secure.
 
+## ARCHITECTURE
+
+![Architecture](https://github.com/Aavishkar-Kolte/PIXEL-AGE/assets/120270667/74e3786f-6116-492f-a774-515c24854f0d)
+
+
 ## THE STORY BEHIND THE GAME
 
 <div align="justify">
