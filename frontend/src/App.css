@@ -1,13 +1,9 @@
 * {
-  font-family: 'VT323', monospace;
+  font-family: "VT323", monospace;
   margin: 0;
   padding: 0;
   color: #ebdfc8;
 }
-
-
-
-
 
 h1 {
   color: #ebdfc8;
@@ -42,11 +38,6 @@ input {
   padding: 5px 10px;
   outline: none;
 }
-
-
-
-
-
 
 /* Classes */
 .App {
@@ -97,11 +88,11 @@ input {
 }
 
 .homepage-container {
-  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.jpg");
+  background-image: url("../public/img/bg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90% 90%;
-  background-color: rgba(0, 0, 0, .96);
+  background-color: rgba(0, 0, 0, 0.96);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,13 +111,12 @@ input {
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.jpg");
+  background-image: url("../public/img/bg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90% 90%;
-  background-color: rgba(0, 0, 0, .96);
+  background-color: rgba(0, 0, 0, 0.96);
   display: flex;
-
 }
 
 .aboutpage-container {
@@ -135,21 +125,20 @@ input {
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.jpg");
+  background-image: url("../public/img/bg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90% 90%;
-  background-color: rgba(0, 0, 0, .96);
+  background-color: rgba(0, 0, 0, 0.96);
   display: flex;
-
 }
 
 .joinlobbypage-container {
-  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.jpg");
+  background-image: url("../public/img/bg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90% 90%;
-  background-color: rgba(0, 0, 0, .96);
+  background-color: rgba(0, 0, 0, 0.96);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,11 +147,11 @@ input {
 }
 
 .lobbypage-container {
-  background-image: url("C:\Users\aavis\Desktop\fighting_game\client\app\public\img\bg.jpg");
+  background-image: url("../public/img/bg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90% 90%;
-  background-color: rgba(0, 0, 0, .96);
+  background-color: rgba(0, 0, 0, 0.96);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -173,7 +162,6 @@ input {
 .game-container {
   position: relative;
   display: inline-block;
-
 }
 
 .div1 {
@@ -199,7 +187,7 @@ input {
 .health-div {
   background-color: red;
   height: 30px;
-  width: 100%
+  width: 100%;
 }
 
 .player-health-bar {
@@ -221,7 +209,6 @@ input {
   font-weight: 800;
   opacity: 0.9;
   padding: 25px 20px 3px 18px;
-
 }
 
 .enemy-health-bar {
@@ -337,7 +324,6 @@ input {
   outline: none;
 }
 
-
 .input::placeholder {
   color: var(--font-color-sub);
   opacity: 0.8;
@@ -428,7 +414,7 @@ input {
 
 .game-tutorial-and-ads-outer-div {
   width: 100%;
-  background-color: rgba(0, 0, 0, .96);
+  background-color: rgba(0, 0, 0, 0.96);
   height: fit-content;
   display: flex;
   align-items: flex-start;
@@ -446,7 +432,6 @@ input {
   border-color: #ebdfc8;
   border-style: none;
   border-radius: 8px;
-
 }
 
 .game-tutorial {
@@ -512,7 +497,7 @@ input {
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  background-color: rgba(0, 0, 0, .8);
+  background-color: rgba(0, 0, 0, 0.8);
   height: 85%;
   width: 86%;
   padding: 20px;
@@ -549,9 +534,6 @@ input {
   border: 2px solid #141716;
   color: #141716;
 }
-
-
-
 
 #send {
   width: 60px;
@@ -643,8 +625,6 @@ input {
   align-items: center;
   justify-content: center;
 }
-
-
 
 .container {
   width: 112px;
@@ -750,7 +730,6 @@ input {
 }
 
 @keyframes anime2 {
-
   0%,
   12.5%,
   25%,
@@ -792,7 +771,6 @@ input {
 }
 
 @keyframes anime3 {
-
   0%,
   12.5% {
     width: 48px;
