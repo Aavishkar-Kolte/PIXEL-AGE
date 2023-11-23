@@ -7,6 +7,7 @@ import FightingGameClient from './FightingGameClient';
 import styled from "styled-components";
 import { Chat } from '../components/Chat';
 import { useNavigate } from 'react-router-dom';
+import { MatchmakingAnimation } from '../components/MatchmakingAnimation';
 
 const GameContainer = styled.div`
    width: 100%;
@@ -67,7 +68,6 @@ function LobbyPage() {
    const sendGameState = (data) => {
       if (dataChannelGameStateData.current.readyState === "open") {
          const gameStateJson = JSON.stringify(data);
-         //   console.log(gameStateJson);
          dataChannelGameStateData.current.send(gameStateJson);
       } else {
          console.log("Data channel for game state is not open, cannot send data.");
@@ -77,7 +77,6 @@ function LobbyPage() {
    const sendClientState = (data) => {
       if (dataChannelClientStateData.current.readyState === "open") {
          const clientStateJson = JSON.stringify(data);
-         //   console.log(clientStateJson);
          dataChannelClientStateData.current.send(clientStateJson);
       } else {
          console.log("Data channel for client state is not open, cannot send data.");
@@ -90,13 +89,11 @@ function LobbyPage() {
    const handleReceivedClientStateData = (event) => {
       const clientStateJson = event.data;
       clientState.current = JSON.parse(clientStateJson)
-      // console.log(clientState.current);
    }
 
    const handleReceivedGameStateData = (event) => {
       const gameStateJson = event.data;
       gameState.current = JSON.parse(gameStateJson)
-      // console.log(gameState.current);
    }
 
    function handleReceivedMessages(event) {
@@ -251,9 +248,9 @@ function LobbyPage() {
 
 
    const handleCancelMatchmaking = () => {
-      socket.emit("delete-log", {playerId: thisPlayerId});
+      socket.emit("delete-log", { playerId: thisPlayerId });
       setName('');
-      setLobbyCode('')
+      setLobbyCode('');
       navigate("/");
    }
 
@@ -262,36 +259,22 @@ function LobbyPage() {
       <div className='lobbypage-container'>
          <div id='game-and-chat-container'>
             {start ?
-               (isGameHost ?
+               (
                   <GameContainer>
                      <div>
-                        <FightingGameHost sendGameState={sendGameState} getClientState={getClientState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />
-                        <div className='ad1'>
+                        {isGameHost ?
+                           <FightingGameHost sendGameState={sendGameState} getClientState={getClientState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />
+                           : <FightingGameClient sendClientState={sendClientState} getGameState={getGameState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />
+                        }
+                        {/* <div className='ad1'>
 
-                        </div>
+                        </div> */}
                      </div>
                      <div className='chatbox-ad-div'>
                         <Chat getMessages={getMessages} sendMessage={sendMessage} />
-                        <div className='ad1'>
+                        {/* <div className='ad1'>
 
-                        </div>
-                     </div>
-                  </GameContainer>
-
-                  :
-                  <GameContainer>
-                     <div>
-                        <FightingGameClient sendClientState={sendClientState} getGameState={getGameState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />
-
-                        <div className='ad1'>
-
-                        </div>
-                     </div>
-                     <div className='chatbox-ad-div'>
-                        <Chat getMessages={getMessages} sendMessage={sendMessage} />
-                        <div className='ad1'>
-
-                        </div>
+                        </div> */}
                      </div>
                   </GameContainer>
                )
@@ -303,17 +286,13 @@ function LobbyPage() {
 
                         </div>
 
-                        <div class="container">
-                           <div class="box1"></div>
-                           <div class="box2"></div>
-                           <div class="box3"></div>
-                        </div>
-                        <div style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
+                        <MatchmakingAnimation />
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                            <h3>Search time: <span ref={timerSpan}>0:00</span></h3>
-                           <br/>
+                           <br />
                            {(cancelFlag ?
                               <>
-                                 <h5 style={{ width:"30%"}}>We apologize for extended matchmaking times. Currently, there are fewer players online. We appreciate your patience as we work to improve the situation.</h5>
+                                 <h5 style={{ width: "30%" }}>We apologize for extended matchmaking times. Currently, there are fewer players online. We appreciate your patience as we work to improve the situation.</h5>
                                  <br />
                                  <button className='button5' onClick={handleCancelMatchmaking}>Cancel Matchmaking</button>
                               </>
@@ -323,17 +302,14 @@ function LobbyPage() {
                      </div>
 
                      :
+
                      <div id='lobby-wait-div'>
                         <div>
                            <h1>LOBBY CODE: {lobbyCode}</h1>
                            <h2>Share this code with a friend to join the game</h2>
                         </div>
+                        <MatchmakingAnimation />
 
-                        <div class="container">
-                           <div class="box1"></div>
-                           <div class="box2"></div>
-                           <div class="box3"></div>
-                        </div>
                         <h2>Please wait for your friend to join</h2>
                      </div>
                )

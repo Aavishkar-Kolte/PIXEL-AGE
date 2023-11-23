@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSocket } from '../providers/Socket';
 import { usePlayerInfo } from '../providers/PlayerInfo';
+import { Header } from '../components/Header';
 
 
 function JoinLobbyPage() {
@@ -57,12 +58,8 @@ function JoinLobbyPage() {
 
     return (
         <div className='joinlobbypage-container'>
-            <div className='header'>
-                <h1 className='logo'>PIXEL-AGE</h1>
-                <button id='header-option' onClick={() => { navigate("../about") }} >ABOUT</button>
-
-            </div>
-            <div class="form-div">
+            <Header />
+            <div className="form-div">
                 <input type="text" placeholder="player name" value={name} onChange={e => { if (e.target.value.length <= 15) setName(e.target.value); }} />
                 <input type="text" placeholder="lobby code" value={lobbyCode} onChange={e => { if (e.target.value.length <= 4) setLobbyCode(e.target.value) }} />
                 <button className="button-confirm" onClick={handleSubmit}> JOIN-LOBBY </button>

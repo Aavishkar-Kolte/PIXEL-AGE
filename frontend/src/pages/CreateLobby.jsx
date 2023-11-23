@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSocket } from '../providers/Socket';
 import { usePlayerInfo } from '../providers/PlayerInfo';
+import { Header } from '../components/Header';
 
 function CreateLobbyPage() {
     const { socket } = useSocket();
@@ -48,11 +49,7 @@ function CreateLobbyPage() {
     return (
         <div className='createlobbypage-container'>
             <div>
-                <div className='header'>
-                    <h1 className='logo'>PIXEL-AGE</h1>
-                    <button id='header-option' onClick={() => { navigate("../about") }}>ABOUT</button>
-
-                </div>
+                <Header />
                 <div className='form-div'>
                     <input type="text" placeholder="player name" value={name} onChange={e => { if (e.target.value.length <= 15) setName(e.target.value); }} />
                     <button className="button-confirm" onClick={handleSubmit}> CREATE-LOBBY </button>

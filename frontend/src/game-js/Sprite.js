@@ -6,6 +6,7 @@ export class Sprite {
         framesMax = 1,
         offset = { x: 0, y: 0 }
     }) {
+
         this.ctx = ctx;
         this.position = position;
         this.width = 55;
@@ -24,15 +25,13 @@ export class Sprite {
             this.isImageLoaded = true;
         };
 
-        this.image.onerror = function(e) {
-            console.error("error", e)
+        this.image.onerror = function (e) {
+            console.error("error", e);
         };
+
     }
 
     draw() {
-        // this.ctx.fillStyle = "red"
-        // this.ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
-
         if (this.isImageLoaded) { // Check if the image is loaded
             this.ctx.drawImage(
                 this.image,
@@ -52,8 +51,7 @@ export class Sprite {
         this.framesElapsed++;
 
         if (this.framesElapsed % this.framesHold === 0) {
-
-            this.framesCurrent = (this.framesCurrent+1) % this.framesMax;
+            this.framesCurrent = (this.framesCurrent + 1) % this.framesMax;
         }
     }
 

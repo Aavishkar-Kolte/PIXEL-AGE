@@ -88,7 +88,7 @@ input {
 }
 
 .homepage-container {
-  background-image: url("../public/img/bg.jpg");
+  background-image: url("../public/img/background.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90% 90%;
@@ -111,7 +111,7 @@ input {
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-image: url("../public/img/bg.jpg");
+  background-image: url("../public/img/background.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90% 90%;
@@ -125,7 +125,7 @@ input {
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-image: url("../public/img/bg.jpg");
+  background-image: url("../public/img/background.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90% 90%;
@@ -134,7 +134,7 @@ input {
 }
 
 .joinlobbypage-container {
-  background-image: url("../public/img/bg.jpg");
+  background-image: url("../public/img/background.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90% 90%;
@@ -147,7 +147,7 @@ input {
 }
 
 .lobbypage-container {
-  background-image: url("../public/img/bg.jpg");
+  background-image: url("../public/img/background.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 90% 90%;
@@ -494,6 +494,7 @@ input {
 
 .about {
   display: flex;
+  gap: 40px;
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
@@ -509,15 +510,6 @@ input {
 
 .text-center {
   text-align: center;
-}
-
-.about p {
-  font-weight: 200;
-  font-size: 15px;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  padding: 0 10%;
 }
 
 .button5 {
@@ -619,11 +611,31 @@ input {
   margin: 0px 0px 20px 0px;
 }
 
-#contact-div {
+#contact {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+#about-game h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.about p {
+  padding: 0px 10%;
+  text-align: center;
+}
+
+#about-developer h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
 }
 
 .container {

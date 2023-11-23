@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
-import Canvas from "../components/Canvas";
+import { Canvas } from "../components/Canvas";
 import { Sprite } from "../game-js/Sprite";
 import { Fighter } from "../game-js/Fighter";
 import { rectangularCollision, determineWinner } from "../game-js/Utils";
@@ -30,7 +30,7 @@ const FightingGameHost = (props) => {
             x: 90,
             y: 37
         },
-        imageSrc: '../img/bar.png',
+        imageSrc: '../img/misc/bar.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -40,7 +40,7 @@ const FightingGameHost = (props) => {
             x: 115,
             y: 44
         },
-        imageSrc: '../img/bar_background.png',
+        imageSrc: '../img/misc/bar_background.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -50,7 +50,7 @@ const FightingGameHost = (props) => {
             x: 115,
             y: 45
         },
-        imageSrc: '../img/health_bar_flipped.png',
+        imageSrc: '../img/misc/health_bar_flipped.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -60,7 +60,7 @@ const FightingGameHost = (props) => {
             x: 0,
             y: 0
         },
-        imageSrc: '../img/weapon_icon_flipped.png',
+        imageSrc: '../img/misc/weapon_icon_flipped.png',
         scale: 2,
         framesMax: 1
     });
@@ -73,7 +73,7 @@ const FightingGameHost = (props) => {
             x: 455,
             y: 37
         },
-        imageSrc: '../img/bar.png',
+        imageSrc: '../img/misc/bar.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -83,7 +83,7 @@ const FightingGameHost = (props) => {
             x: 485,
             y: 44
         },
-        imageSrc: '../img/bar_background.png',
+        imageSrc: '../img/misc/bar_background.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -93,7 +93,7 @@ const FightingGameHost = (props) => {
             x: 477,
             y: 45
         },
-        imageSrc: '../img/health_bar.png',
+        imageSrc: '../img/misc/health_bar.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -103,7 +103,7 @@ const FightingGameHost = (props) => {
             x: 740,
             y: 0
         },
-        imageSrc: '../img/weapon_icon.png',
+        imageSrc: '../img/misc/weapon_icon.png',
         scale: 2,
         framesMax: 1
     });
@@ -118,7 +118,7 @@ const FightingGameHost = (props) => {
             x: 0,
             y: 0
         },
-        imageSrc: '../img/background.png',
+        imageSrc: '../img/map/map1.png',
         scale: 1.91,
         framesMax: 1
     });
@@ -130,7 +130,7 @@ const FightingGameHost = (props) => {
             x: 670,
             y: 200
         },
-        imageSrc: '../img/big_torch.png',
+        imageSrc: '../img/map/big_torch.png',
         scale: 1.5,
         framesMax: 6
     });
@@ -140,7 +140,7 @@ const FightingGameHost = (props) => {
             x: 120,
             y: 200
         },
-        imageSrc: '../img/big_torch.png',
+        imageSrc: '../img/map/big_torch.png',
         scale: 1.5,
         framesMax: 6
     });
@@ -150,7 +150,7 @@ const FightingGameHost = (props) => {
             x: 413,
             y: 228
         },
-        imageSrc: '../img/tall_candle.png',
+        imageSrc: '../img/map/tall_candle.png',
         scale: 2,
         framesMax: 6
     });
@@ -410,7 +410,6 @@ const FightingGameHost = (props) => {
             if (temp !== null) {
                 enemy.currentStatus = temp;
             }
-            // console.log(enemy.currentStatus)
 
 
             ctx.fillStyle = "black";
@@ -419,9 +418,6 @@ const FightingGameHost = (props) => {
             torch1.update();
             torch2.update();
             tallCandle.update()
-
-            // ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-            // ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
 
             if (gameOver.current === false || enemy.currentSprite === "idle" || enemy.currentSprite === "death") {

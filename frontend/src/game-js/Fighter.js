@@ -1,6 +1,6 @@
-import { Sprite } from "./Sprite"
+import { Sprite } from "./Sprite";
 
-const gravity = 0.75
+const gravity = 0.75;
 
 export class Fighter extends Sprite {
     constructor(ctx, {
@@ -13,17 +13,18 @@ export class Fighter extends Sprite {
         sprites,
         attackBox = { offset: {}, width: undefined, height: undefined }
     }) {
+
         super(ctx, {
             position,
             imageSrc,
             scale,
             framesMax,
             offset
-        })
+        });
 
-        this.velocity = velocity
-        this.width = 55
-        this.height = 130
+        this.velocity = velocity;
+        this.width = 55;
+        this.height = 130;
         this.attackBox = {
             position: {
                 x: this.position.x,
@@ -32,12 +33,12 @@ export class Fighter extends Sprite {
             offset: attackBox.offset,
             width: attackBox.width,
             height: attackBox.height
-        }
-        this.health = 100
-        this.framesCurrent = 0
-        this.framesElapsed = 0
-        this.sprites = sprites
-        this.currentSprite = 'idle'
+        };
+        this.health = 100;
+        this.framesCurrent = 0;
+        this.framesElapsed = 0;
+        this.sprites = sprites;
+        this.currentSprite = 'idle';
         this.currentStatus = {
             lastMove: '',
             isMovingForward: false,
@@ -46,8 +47,8 @@ export class Fighter extends Sprite {
             isAttacking: false,
             isDefending: false,
             takeHit: false
-        }
-        this.dead = false
+        };
+        this.dead = false;
 
 
         for (const sprite in this.sprites) {
@@ -55,6 +56,7 @@ export class Fighter extends Sprite {
             sprites[sprite].image.src = sprites[sprite].imageSrc
         }
     }
+
 
     draw() {
 
@@ -73,6 +75,7 @@ export class Fighter extends Sprite {
         }
     }
 
+
     animateFrames() {
 
         this.framesElapsed++;
@@ -87,27 +90,16 @@ export class Fighter extends Sprite {
         }
     }
 
+
     update() {
         this.draw()
         if (!(this.dead && this.framesCurrent === 5)) {
-            // console.log(this.dead, " -> ", this.framesCurrent)
             this.animateFrames()
         }
 
         // attack boxes
         this.attackBox.position.x = this.position.x + this.attackBox.offset.x
         this.attackBox.position.y = this.position.y + this.attackBox.offset.y
-
-
-        // this.ctx.fillStyle = "red"
-
-        // // draw the attack box
-        // this.ctx.fillRect(
-        //   this.attackBox.position.x,
-        //   this.attackBox.position.y,
-        //   this.attackBox.width,
-        //   this.attackBox.height
-        // )
 
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
@@ -143,33 +135,26 @@ export class Fighter extends Sprite {
             return
         }
 
-        if (
-            this.image === this.sprites.death.image &&
-            this.framesCurrent < this.sprites.death.framesMax - 1
-        )
-            return
+        if (this.image === this.sprites.death.image
+            && this.framesCurrent < this.sprites.death.framesMax - 1
+        ) { return; }
 
         // overriding all other animations with the attack animation
-        if (!gameOver && (this.currentStatus.isAttacking || this.framesCurrent < this.framesMax - 1) && this.image === this.sprites.attack1.image) {
-            //    console.log("IF: ", this.image.src, " - ", this.sprites.attack1.image.src, this.framesCurrent) ;
-            return;
-        } else {
-            // console.log("ELSE: ", this.image.src, " - ", this.sprites.attack1.image.src, this.framesCurrent);
-        }
-
+        if (!gameOver
+            && (this.currentStatus.isAttacking || this.framesCurrent < this.framesMax - 1)
+            && this.image === this.sprites.attack1.image
+        ) { return; }
 
         // override when fighter gets hit
-        if (
-            this.image === this.sprites.takeHit.image &&
-            this.framesCurrent < this.sprites.takeHit.framesMax - 1
+        if (this.image === this.sprites.takeHit.image
+            && this.framesCurrent < this.sprites.takeHit.framesMax - 1
             && !this.dead
-        )
-            return
+        ) { return; }
+
 
         switch (sprite) {
             case 'idle':
                 if (this.image !== this.sprites.idle.image) {
-                    // console.log(this.image.src, " -> " ,this.framesCurrent, " ", this.currentSprite)
                     this.image = this.sprites.idle.image
                     this.framesMax = this.sprites.idle.framesMax
                     this.framesCurrent = 0
@@ -205,7 +190,6 @@ export class Fighter extends Sprite {
 
             case 'attack1':
                 if (this.image !== this.sprites.attack1.image) {
-                    // console.log(this.image.src, " -> " ,this.framesCurrent, " ", this.currentSprite)
                     this.image = this.sprites.attack1.image
                     this.framesMax = this.sprites.attack1.framesMax
                     this.framesCurrent = 0
@@ -240,6 +224,9 @@ export class Fighter extends Sprite {
                     this.currentSprite = 'defend'
                 }
                 break
+
+            default:
+                break;
         }
     }
 }

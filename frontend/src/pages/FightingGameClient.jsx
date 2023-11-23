@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import Canvas from "../components/Canvas";
+import { Canvas } from "../components/Canvas";
 import { Sprite } from "../game-js/Sprite";
 import { Fighter } from "../game-js/Fighter";
 import { determineWinner } from "../game-js/Utils";
@@ -28,7 +28,7 @@ const FightingGameClient = (props) => {
             x: 90,
             y: 37
         },
-        imageSrc: '../img/bar.png',
+        imageSrc: '../img/misc/bar.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -38,7 +38,7 @@ const FightingGameClient = (props) => {
             x: 115,
             y: 44
         },
-        imageSrc: '../img/bar_background.png',
+        imageSrc: '../img/misc/bar_background.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -48,7 +48,7 @@ const FightingGameClient = (props) => {
             x: 115,
             y: 45
         },
-        imageSrc: '../img/health_bar_flipped.png',
+        imageSrc: '../img/misc/health_bar_flipped.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -58,7 +58,7 @@ const FightingGameClient = (props) => {
             x: 0,
             y: 0
         },
-        imageSrc: '../img/weapon_icon_flipped.png',
+        imageSrc: '../img/misc/weapon_icon_flipped.png',
         scale: 2,
         framesMax: 1
     });
@@ -71,7 +71,7 @@ const FightingGameClient = (props) => {
             x: 455,
             y: 37
         },
-        imageSrc: '../img/bar.png',
+        imageSrc: '../img/misc/bar.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -81,7 +81,7 @@ const FightingGameClient = (props) => {
             x: 485,
             y: 44
         },
-        imageSrc: '../img/bar_background.png',
+        imageSrc: '../img/misc/bar_background.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -91,7 +91,7 @@ const FightingGameClient = (props) => {
             x: 477,
             y: 45
         },
-        imageSrc: '../img/health_bar.png',
+        imageSrc: '../img/misc/health_bar.png',
         scale: 2.6,
         framesMax: 1
     });
@@ -101,7 +101,7 @@ const FightingGameClient = (props) => {
             x: 740,
             y: 0
         },
-        imageSrc: '../img/weapon_icon.png',
+        imageSrc: '../img/misc/weapon_icon.png',
         scale: 2,
         framesMax: 1
     });
@@ -115,7 +115,7 @@ const FightingGameClient = (props) => {
             x: 0,
             y: 0
         },
-        imageSrc: '../img/background.png',
+        imageSrc: '../img/map/map1.png',
         scale: 1.91,
         framesMax: 1
     });
@@ -127,7 +127,7 @@ const FightingGameClient = (props) => {
             x: 670,
             y: 200
         },
-        imageSrc: '../img/big_torch.png',
+        imageSrc: '../img/map/big_torch.png',
         scale: 1.5,
         framesMax: 6
     });
@@ -137,7 +137,7 @@ const FightingGameClient = (props) => {
             x: 120,
             y: 200
         },
-        imageSrc: '../img/big_torch.png',
+        imageSrc: '../img/map/big_torch.png',
         scale: 1.5,
         framesMax: 6
     });
@@ -147,7 +147,7 @@ const FightingGameClient = (props) => {
             x: 413,
             y: 228
         },
-        imageSrc: '../img/tall_candle.png',
+        imageSrc: '../img/map/tall_candle.png',
         scale: 2,
         framesMax: 6
     });
@@ -419,7 +419,7 @@ const FightingGameClient = (props) => {
             enemy.currentSprite = gameState.current.enemy.currentSprite;
             enemy.health = gameState.current.enemy.health;
 
-            if(prevEnemyPosition.current !== gameState.current.enemy.position){
+            if (prevEnemyPosition.current !== gameState.current.enemy.position) {
                 enemy.position.y = gameState.current.enemy.position.y;
                 enemy.position.x = 849 - gameState.current.enemy.position.x - enemy.width;
                 enemy.velocity.y = gameState.current.enemy.velocity.y;

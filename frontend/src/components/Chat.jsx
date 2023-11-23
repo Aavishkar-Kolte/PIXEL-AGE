@@ -86,13 +86,10 @@ const PartnerMessage = styled.div`
 `;
 
 
-
 export const Chat = (props) => {
     const text = useRef(null);
     const messagesContainer = useRef(null);
     const [messages, setMessages] = useState([]);
-
-
 
 
     useEffect(() => {
@@ -103,7 +100,8 @@ export const Chat = (props) => {
         return () => {
             clearInterval(interval);
         };
-    }, []);
+    }, [props]);
+
 
     useEffect(() => {
         // Scroll to the bottom of the messages container whenever messages change
@@ -111,6 +109,7 @@ export const Chat = (props) => {
             messagesContainer.current.scrollBy(0, messagesContainer.current.scrollHeight);
         }
     }, [messages]);
+
 
     useEffect(() => {
         text.current.addEventListener("keypress", function (event) {
@@ -141,6 +140,8 @@ export const Chat = (props) => {
             </PartnerRow>
         )
     }
+
+
     return (
         <div id="chat-div">
             <Container>
