@@ -1,0 +1,18 @@
+{
+  "name": "pixel-age",
+  "version": "1.4.0",
+  "description": "PIXEL-AGE is a browser-based, online multiplayer game (2-player game) designed to play with friends or to engage in random battles with opponents from around the world. To initiate a game with friends, players can create a private lobby and share the lobby code with their friends. This allows players to easily join the same game and compete against each other using the lobby code. Or players can rapidly match up with random opponents using the \"Play Online\" feature.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "start-backend": "cd backend && npm start",
+    "start-frontend": "cd frontend && npm start",
+    "start": "concurrently \"npm run start-backend\" \"npm run start-frontend\""
+  },
+  "author": "Aavishkar Kolte",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
