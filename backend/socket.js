@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import { handleConnection } from "./controllers/socketController.js";
 
+// Function to create the instance of the socket.io server and configure it
 export const configureSocketIO = (server) => {
     const io = new Server(server, {
         cors: {
@@ -9,6 +10,7 @@ export const configureSocketIO = (server) => {
         },
     });
 
+    // Event handler for when a client connects to the server
     io.on("connection", (server) => {
         handleConnection(server, io);
     });
