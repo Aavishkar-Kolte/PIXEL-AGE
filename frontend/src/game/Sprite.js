@@ -21,7 +21,6 @@ export class Sprite {
         this.offset = offset;
 
         this.image.onload = () => {
-            // The image has fully loaded, you can now safely proceed
             this.isImageLoaded = true;
         };
 

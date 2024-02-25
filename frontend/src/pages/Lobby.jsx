@@ -1,44 +1,36 @@
-import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useSocket } from '../providers/Socket';
 import { usePlayerInfo } from '../providers/PlayerInfo';
 import { usePeer } from '../providers/Peer';
 import FightingGameHost from './FightingGameHost';
 import FightingGameClient from './FightingGameClient';
-import styled from "styled-components";
 import { Chat } from '../components/Chat';
 import { useNavigate } from 'react-router-dom';
 import { MatchmakingAnimation } from '../components/MatchmakingAnimation';
+import { timer } from '../utils/Timer';
 
-const GameContainer = styled.div`
-   width: 100%;
-   height: 100%;
-   box-sizing: border-box;
-   float: left;
-   padding: 15px;
-   display: flex;
-   border-radius: 10px;
-   background-color: rgb(0,0,0,0.75);
-   gap: 15px
-`;
 
 function LobbyPage() {
-   const clientState = useRef(null);
-   const gameState = useRef(null);
-   const { socket } = useSocket();
    const { lobbyCode, setLobbyCode, name, setName, thisPlayerId, isGameHost, isPlayOnline } = usePlayerInfo();
    const { Peer, createOffer, createAnswer, createPeer } = usePeer();
+   const { socket } = useSocket();
+   const navigate = useNavigate();
+
+   const clientState = useRef(null);
+   const gameState = useRef(null);
    const dataChannelMessages = useRef(null);
    const dataChannelGameStateData = useRef(null);
    const dataChannelClientStateData = useRef(null);
    const opponentPlayerId = useRef('.');
    const opponentPlayerName = useRef(name);
    const messages = useRef([]);
-   const [start, setStart] = useState(false);
    const time = useRef(0);
    const timerId = useRef(null);
    const timerSpan = useRef(null);
+
+   const [start, setStart] = useState(false);
    const [cancelFlag, setCancelFlag] = useState(false)
-   const navigate = useNavigate();
+
 
    function getPlayerName() {
       return name;
@@ -51,6 +43,15 @@ function LobbyPage() {
    function getMessages() {
       return messages.current;
    }
+
+   const getClientState = () => {
+      return clientState.current;
+   }
+
+   const getGameState = () => {
+      return gameState.current;
+   }
+
 
    function sendMessage(text) {
       if (dataChannelMessages.current.readyState === "open") {
@@ -83,9 +84,6 @@ function LobbyPage() {
       }
    }
 
-
-
-
    const handleReceivedClientStateData = (event) => {
       const clientStateJson = event.data;
       clientState.current = JSON.parse(clientStateJson)
@@ -100,17 +98,6 @@ function LobbyPage() {
       messages.current = [...messages.current, { yours: false, value: event.data }];
       console.log(event.data)
    }
-
-
-
-   const getClientState = () => {
-      return clientState.current;
-   }
-
-   const getGameState = () => {
-      return gameState.current;
-   }
-
 
    const handleNewPlayerJoined = useCallback(async (data) => {
       console.log("New player joined " + data.name);
@@ -222,28 +209,8 @@ function LobbyPage() {
          clearTimeout(timerId.current);
    }, [start]);
 
-   const timer = useMemo(() => {
-      return () => {
-         if (time.current >= 0) {
-            timerId.current = setTimeout(() => {
-               time.current++;
-               if (timerSpan.current) {
-                  timerSpan.current.innerHTML = Math.floor(time.current / 60) + ":" + (time.current % 60 < 10 ? '0' : '') + (time.current % 60);
-               }
-               if (time.current > 120 && !cancelFlag) {
-                  setCancelFlag(true);
-               }
-               timer();
-            }, 1000);
-         }
-         else {
-            return;
-         }
-      }
-   }, [])
-
    useEffect(() => {
-      timer();
+      timer(time, timerId, timerSpan, setCancelFlag, cancelFlag);
    }, []);
 
 
@@ -257,10 +224,10 @@ function LobbyPage() {
 
    return (
       <div className='lobbypage-container'>
-         <div id='game-and-chat-container'>
+         <div id='game-and-chat-outer-container'>
             {start ?
                (
-                  <GameContainer>
+                  <div id='game-and-chat-container'>
                      <div>
                         {isGameHost ?
                            <FightingGameHost sendGameState={sendGameState} getClientState={getClientState} getPlayerName={getPlayerName} getEnemyName={getEnemyName} />
@@ -276,7 +243,7 @@ function LobbyPage() {
 
                         </div> */}
                      </div>
-                  </GameContainer>
+                  </div>
                )
                : (
                   isPlayOnline ?

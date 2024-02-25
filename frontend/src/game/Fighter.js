@@ -58,31 +58,10 @@ export class Fighter extends Sprite {
     }
 
 
-    draw() {
-
-        if (this.isImageLoaded) {
-            this.ctx.drawImage(
-                this.image,
-                this.framesCurrent * (this.image.width / this.framesMax),
-                0,
-                this.image.width / this.framesMax,
-                this.image.height,
-                this.position.x - this.offset.x,
-                this.position.y - this.offset.y,
-                (this.image.width / this.framesMax) * this.scale,
-                this.image.height * this.scale
-            );
-        }
-    }
-
-
     animateFrames() {
-
         this.framesElapsed++;
-
         if (this.framesElapsed % this.sprites[this.currentSprite].framesHold === 0) {
-
-            if (!(this.dead && this.framesCurrent === this.framesMax - 1) && this.framesCurrent < this.framesMax - 1) {
+            if (this.framesCurrent < this.framesMax - 1) {
                 this.framesCurrent++;
             } else if (!this.isJumping || !this.dead) {
                 this.framesCurrent = 0;
@@ -131,13 +110,9 @@ export class Fighter extends Sprite {
     }
 
     switchSprite({ sprite, gameOver = false }) {
-        if (this.dead) {
+        if (this.dead && this.image === this.sprites.death.image) {
             return
         }
-
-        if (this.image === this.sprites.death.image
-            && this.framesCurrent < this.sprites.death.framesMax - 1
-        ) { return; }
 
         // overriding all other animations with the attack animation
         if (!gameOver
@@ -180,7 +155,6 @@ export class Fighter extends Sprite {
 
             case 'fall':
                 if (this.image !== this.sprites.fall.image) {
-
                     this.image = this.sprites.fall.image
                     this.framesMax = this.sprites.fall.framesMax
                     this.framesCurrent = 0
@@ -213,6 +187,7 @@ export class Fighter extends Sprite {
                     this.framesMax = this.sprites.death.framesMax
                     this.framesCurrent = 0
                     this.currentSprite = 'death'
+                    this.dead = true
                 }
                 break
 

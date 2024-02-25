@@ -31,14 +31,12 @@ export function determineWinner(gameOverRef, HandleKeyDown, HandleKeyUp, { playe
         gameOverRef.current.innerHTML = playerName + " wins";
         player.switchSprite({ sprite: 'idle', gameOver: true });
         enemy.switchSprite({ sprite: 'death', gameOver: true });
-        enemy.dead = true;
         return playerName;
 
     } else if (player.health < enemy.health) {
         gameOverRef.current.innerHTML = enemyName + " wins";
         player.switchSprite({ sprite: 'death', gameOver: true });
         enemy.switchSprite({ sprite: 'idle', gameOver: true });
-        player.dead = true;
         return enemyName;
     }
 }

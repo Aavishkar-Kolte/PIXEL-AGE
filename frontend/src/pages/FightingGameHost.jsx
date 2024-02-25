@@ -1,301 +1,48 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { Canvas } from "../components/Canvas";
-import { Sprite } from "../game-js/Sprite";
-import { Fighter } from "../game-js/Fighter";
-import { rectangularCollision, determineWinner } from "../game-js/Utils";
+import { initGameObjects } from "../game/GameObjects";
+import { rectangularCollision, determineWinner } from "../game/Utils";
+import { decreaseTimer } from "../utils/Timer";
+import { drawAllElements } from "../game/DrawAllElements";
+import { updateKnightSprite } from "../game/UpdateKnightSprite";
 
 const FightingGameHost = (props) => {
 
     const [ctx, setCtx] = useState(null);
+
     const gameOverText = useRef(null);
     const timer = useRef(null);
     const gameOver = useRef(false);
+    const winner = useRef(null);
+    let time = useRef(180);
+    let timerId = useRef()
+
     let tempStr = props.getPlayerName();
     const playerName = useRef(tempStr.charAt(0).toUpperCase() + tempStr.slice(1).toLowerCase())
     tempStr = props.getEnemyName();
     const enemyName = useRef(tempStr.charAt(0).toUpperCase() + tempStr.slice(1).toLowerCase())
-    const winner = useRef(null);
-    let time = useRef(180);
-    let timerId = useRef()
+
 
     const establishContext = (context) => {
         setCtx(context);
     };
 
-
-
-    // Player healthbar sprite
-    const playerHealthBar = new Sprite(ctx, {
-        position: {
-            x: 90,
-            y: 37
-        },
-        imageSrc: '../img/misc/bar.png',
-        scale: 2.6,
-        framesMax: 1
-    });
-
-    const playerHealthBarBG = new Sprite(ctx, {
-        position: {
-            x: 115,
-            y: 44
-        },
-        imageSrc: '../img/misc/bar_background.png',
-        scale: 2.6,
-        framesMax: 1
-    });
-
-    const playerHealth = new Sprite(ctx, {
-        position: {
-            x: 115,
-            y: 45
-        },
-        imageSrc: '../img/misc/health_bar_flipped.png',
-        scale: 2.6,
-        framesMax: 1
-    });
-
-    const playerWeaponIcon = new Sprite(ctx, {
-        position: {
-            x: 0,
-            y: 0
-        },
-        imageSrc: '../img/misc/weapon_icon_flipped.png',
-        scale: 2,
-        framesMax: 1
-    });
-
-
-
-    // Enemy healthbar sprite
-    const enemyHealthBar = new Sprite(ctx, {
-        position: {
-            x: 455,
-            y: 37
-        },
-        imageSrc: '../img/misc/bar.png',
-        scale: 2.6,
-        framesMax: 1
-    });
-
-    const enemyHealthBarBG = new Sprite(ctx, {
-        position: {
-            x: 485,
-            y: 44
-        },
-        imageSrc: '../img/misc/bar_background.png',
-        scale: 2.6,
-        framesMax: 1
-    });
-
-    const enemyHealth = new Sprite(ctx, {
-        position: {
-            x: 477,
-            y: 45
-        },
-        imageSrc: '../img/misc/health_bar.png',
-        scale: 2.6,
-        framesMax: 1
-    });
-
-    const enemyWeaponIcon = new Sprite(ctx, {
-        position: {
-            x: 740,
-            y: 0
-        },
-        imageSrc: '../img/misc/weapon_icon.png',
-        scale: 2,
-        framesMax: 1
-    });
-
-
-
-
-
-    // Background sprite
-    const background = new Sprite(ctx, {
-        position: {
-            x: 0,
-            y: 0
-        },
-        imageSrc: '../img/map/map1.png',
-        scale: 1.91,
-        framesMax: 1
-    });
-
-
-    // Torch and candle sprites
-    const torch1 = new Sprite(ctx, {
-        position: {
-            x: 670,
-            y: 200
-        },
-        imageSrc: '../img/map/big_torch.png',
-        scale: 1.5,
-        framesMax: 6
-    });
-
-    const torch2 = new Sprite(ctx, {
-        position: {
-            x: 120,
-            y: 200
-        },
-        imageSrc: '../img/map/big_torch.png',
-        scale: 1.5,
-        framesMax: 6
-    });
-
-    const tallCandle = new Sprite(ctx, {
-        position: {
-            x: 413,
-            y: 228
-        },
-        imageSrc: '../img/map/tall_candle.png',
-        scale: 2,
-        framesMax: 6
-    });
-
-
-
-    // Player Sprite
-    const player = new Fighter(ctx, {
-        position: {
-            x: 80,
-            y: 100
-        },
-        velocity: {
-            x: 0,
-            y: 0
-        },
-        imageSrc: '../img/Knight_1/Idle.png',
-        framesMax: 4,
-        scale: 2,
-        offset: {
-            x: 94,
-            y: 127
-        },
-        sprites: {
-            idle: {
-                imageSrc: '../img/Knight_1/Idle.png',
-                framesMax: 4,
-                framesHold: 12
-            },
-            run: {
-                imageSrc: '../img/Knight_1/Run.png',
-                framesMax: 7,
-                framesHold: 8
-            },
-            jump: {
-                imageSrc: '../img/Knight_1/Jump2.png',
-                framesMax: 2,
-                framesHold: 20
-            },
-            fall: {
-                imageSrc: '../img/Knight_1/Fall.png',
-                framesMax: 1,
-                framesHold: 5
-            },
-            attack1: {
-                imageSrc: '../img/Knight_1/Attack 2.png',
-                framesMax: 4,
-                framesHold: 7
-            },
-            takeHit: {
-                imageSrc: '../img/Knight_1/Hurt.png',
-                framesMax: 2,
-                framesHold: 12
-            },
-            death: {
-                imageSrc: '../img/Knight_1/Dead.png',
-                framesMax: 6,
-                framesHold: 10
-            },
-            defend: {
-                imageSrc: '../img/Knight_1/Defend.png',
-                framesMax: 1,
-                framesHold: 5
-            }
-        },
-        attackBox: {
-            offset: {
-                x: 55,
-                y: 10
-            },
-            width: 105,
-            height: 75
-        }
-    });
-
-
-    // Enemy sprite
-    const enemy = new Fighter(ctx, {
-        position: {
-            x: 714,
-            y: 100
-        },
-        velocity: {
-            x: 0,
-            y: 0
-        },
-        imageSrc: '../img/Knight_2/Idle.png',
-        framesMax: 4,
-        scale: 2,
-        offset: {
-            x: 107,
-            y: 127
-        },
-        sprites: {
-            idle: {
-                imageSrc: '../img/Knight_2/Idle.png',
-                framesMax: 4,
-                framesHold: 12
-            },
-            run: {
-                imageSrc: '../img/Knight_2/Run.png',
-                framesMax: 7,
-                framesHold: 8
-            },
-            jump: {
-                imageSrc: '../img/Knight_2/Jump2.png',
-                framesMax: 2,
-                framesHold: 20
-            },
-            fall: {
-                imageSrc: '../img/Knight_2/Fall.png',
-                framesMax: 1,
-                framesHold: 5
-            },
-            attack1: {
-                imageSrc: '../img/Knight_2/Attack 2.png',
-                framesMax: 4,
-                framesHold: 7
-            },
-            takeHit: {
-                imageSrc: '../img/Knight_2/Hurt.png',
-                framesMax: 2,
-                framesHold: 12
-            },
-            death: {
-                imageSrc: '../img/Knight_2/Dead.png',
-                framesMax: 6,
-                framesHold: 10
-            },
-            defend: {
-                imageSrc: '../img/Knight_2/Defend.png',
-                framesMax: 1,
-                framesHold: 5
-            }
-        },
-        attackBox: {
-            offset: {
-                x: -105,
-                y: 10
-            },
-            width: 105,
-            height: 75
-        }
-    });
-
+    const {
+        playerHealthBar,
+        playerHealthBarBG,
+        playerHealth,
+        playerWeaponIcon,
+        enemyHealthBar,
+        enemyHealthBarBG,
+        enemyHealth,
+        enemyWeaponIcon,
+        background,
+        torch1,
+        torch2,
+        tallCandle,
+        player,
+        enemy
+    } = initGameObjects(ctx);
 
 
     function HandleKeyDown(event) {
@@ -344,26 +91,9 @@ const FightingGameHost = (props) => {
     window.addEventListener('keydown', HandleKeyDown);
     window.addEventListener('keyup', HandleKeyUp);
 
-    // Game timer
-    const decreaseTimer = useMemo(() => {
-        return () => {
-            if (time.current > 0 && gameOver.current === false) {
-                timerId.current = setTimeout(() => {
-                    time.current--;
-                    if (timer.current) {
-                        timer.current.innerHTML = time.current;
-                    }
-                    decreaseTimer();
-                }, 1000);
-            }
-            else {
-                return;
-            }
-        }
-    }, [gameOverText])
 
     useEffect(() => {
-        decreaseTimer();
+        decreaseTimer(time, timerId, timer, gameOver);
     }, []);
 
 
@@ -399,80 +129,37 @@ const FightingGameHost = (props) => {
         winner: "test"
     });
 
-    const count = useRef(0);
-
-
 
     const draw = () => {
         if (ctx) {
 
             let temp = props.getClientState();
+
             if (temp !== null) {
                 enemy.currentStatus = temp;
             }
 
+            drawAllElements({
+                ctx,
+                background,
+                torch1,
+                torch2,
+                tallCandle,
+                playerHealthBarBG,
+                enemyHealthBarBG,
+                playerWeaponIcon,
+                enemyWeaponIcon,
+                playerHealth,
+                enemyHealth,
+                playerHealthBar,
+                enemyHealthBar,
+                player,
+                enemy,
+                playerName,
+                enemyName,
+                gameOver
+            })
 
-            ctx.fillStyle = "black";
-            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            background.update();
-            torch1.update();
-            torch2.update();
-            tallCandle.update()
-
-
-            if (gameOver.current === false || enemy.currentSprite === "idle" || enemy.currentSprite === "death") {
-                enemy.update();
-            }
-
-            if (gameOver.current === false || player.currentSprite === "idle" || player.currentSprite === "death") {
-                player.update();
-            }
-
-
-
-
-            playerHealthBarBG.update();
-            enemyHealthBarBG.update();
-
-            playerWeaponIcon.update();
-            enemyWeaponIcon.update();
-
-
-            playerHealth.ctx.drawImage(
-                playerHealth.image,
-                0,
-                0,
-                playerHealth.image.width,
-                playerHealth.image.height,
-                playerHealth.position.x - playerHealth.offset.x,
-                playerHealth.position.y - playerHealth.offset.y,
-                (playerHealth.image.width * player.health / 100) * playerHealth.scale,
-                playerHealth.image.height * playerHealth.scale
-            );
-
-
-            enemyHealth.ctx.drawImage(
-                enemyHealth.image,
-                0,
-                0,
-                enemyHealth.image.width,
-                enemyHealth.image.height,
-                enemyHealth.position.x - enemyHealth.offset.x,
-                enemyHealth.position.y - enemyHealth.offset.y,
-                (enemyHealth.image.width * enemy.health / 100) * enemyHealth.scale,
-                enemyHealth.image.height * enemyHealth.scale
-            );
-
-
-            playerHealthBar.update();
-            enemyHealthBar.update();
-
-            ctx.font = "26px Papyrus";
-            ctx.fillStyle = "white";
-            ctx.fillText(playerName.current, 115, 31);
-
-            ctx.fillStyle = "white";
-            ctx.fillText(enemyName.current, 854 - ctx.measureText(enemyName.current).width - 114, 31);
 
 
 
@@ -484,7 +171,6 @@ const FightingGameHost = (props) => {
                 if (!gameOver.current) {
                     winner.current = determineWinner(gameOverText, HandleKeyDown, HandleKeyUp, { player, playerName: playerName.current, enemy, enemyName: enemyName.current, timerId: timerId.current, time: time.current });
                     gameOver.current = true
-                    // console.log("hello");
                 } else {
                     gameState.current = {
                         player: {
@@ -517,136 +203,7 @@ const FightingGameHost = (props) => {
             }
 
 
-
-
-
-            // Enemy movement
-            if (enemy.currentStatus.isMovingForward && enemy.currentStatus.lastMove === 'forward' && enemy.position.x > 20) {
-                if (enemy.currentStatus.isDefending) {
-                    enemy.velocity.x = -2;
-                } else {
-                    enemy.velocity.x = -5;
-                    if (!enemy.isAttacking)
-                        enemy.switchSprite({ sprite: 'run' });
-                }
-            } else if (enemy.currentStatus.isMovingBackward && enemy.currentStatus.lastMove === 'backward' && enemy.position.x < 795) {
-                if (enemy.currentStatus.isDefending) {
-                    enemy.velocity.x = 2
-                } else {
-                    enemy.velocity.x = 5;
-                    if (!enemy.isAttacking)
-                        enemy.switchSprite({ sprite: 'run' });
-                }
-            }
-
-            if (enemy.currentStatus.isJumping) {
-                enemy.velocity.y = -15;
-                enemy.currentStatus.isJumping = false;
-            }
-
-            // jumping
-            if (enemy.velocity.y < 0) {
-                enemy.switchSprite({ sprite: 'jump' });
-            } else if (enemy.velocity.y > 0) {
-                enemy.switchSprite({ sprite: 'fall' });
-            }
-
-            if (enemy.position.y <= 105 && !(enemy.velocity.y > 0)) {
-                enemy.velocity.y = 0
-            }
-
-            if (enemy.currentStatus.isAttacking === false && enemy.velocity.y === 0 && enemy.velocity.x === 0 && !enemy.currentStatus.isJumping) {
-                enemy.switchSprite({ sprite: 'idle' });
-            }
-
-            if (enemy.velocity.y === 0) {
-                enemy.currentStatus.isJumping = false;
-            }
-
-
-
-
-
-
-
-
-            // player movement
-
-            if (player.currentStatus.isMovingBackward && player.currentStatus.lastMove === 'backward' && player.position.x > 5) {
-                if (player.currentStatus.isDefending) {
-                    player.velocity.x = -2;
-                } else {
-                    player.velocity.x = -5;
-                    if (!player.isAttacking)
-                        player.switchSprite({ sprite: 'run' });
-                }
-            } else if (player.currentStatus.isMovingForward && player.currentStatus.lastMove === 'forward' && player.position.x < 780) {
-                if (player.currentStatus.isDefending) {
-                    player.velocity.x = 2;
-                } else {
-                    player.velocity.x = 5;
-                    if (!player.isAttacking)
-                        player.switchSprite({ sprite: 'run' });
-                }
-            }
-
-            if (player.currentStatus.isJumping) {
-                player.velocity.y = -15;
-                player.currentStatus.isJumping = false;
-            }
-
-            // jumping
-            if (player.velocity.y < 0) {
-                player.switchSprite({ sprite: 'jump' });
-            } else if (player.velocity.y > 0) {
-                player.switchSprite({ sprite: 'fall' });
-            }
-
-            if (player.position.y <= 105 && !(player.velocity.y > 0)) {
-                player.velocity.y = 0
-            }
-
-            if (player.currentStatus.isAttacking === false && player.velocity.y === 0 && player.velocity.x === 0 && !player.currentStatus.isJumping) {
-                player.switchSprite({ sprite: 'idle' });
-            }
-
-            if (player.velocity.y === 0) {
-                player.currentStatus.isJumping = false;
-            }
-
-
-
-
-
-
-
-            if (enemy.currentStatus.isDefending) {
-                enemy.switchSprite({ sprite: 'defend' })
-                if (enemy.velocity.y < 0) enemy.velocity.y = 0;
-            }
-
-            if (player.currentStatus.isDefending) {
-                player.switchSprite({ sprite: 'defend' })
-                if (player.velocity.y < 0) player.velocity.y = 0;
-            }
-
-
-
-
-
-
-
-            if (player.currentStatus.isAttacking) {
-                player.attack();
-            }
-
-            if (enemy.currentStatus.isAttacking) {
-                enemy.attack();
-            }
-
-
-
-
+            updateKnightSprite(player, enemy);
 
 
             // enemyHealth is where our player gets hit
@@ -683,7 +240,6 @@ const FightingGameHost = (props) => {
 
 
 
-
             gameState.current = {
                 player: {
                     currentStatus: enemy.currentStatus,
@@ -709,8 +265,6 @@ const FightingGameHost = (props) => {
 
             props.sendGameState(gameState.current);
 
-
-            count.current++;
 
             player.currentStatus.takeHit = false;
             enemy.currentStatus.takeHit = false;
