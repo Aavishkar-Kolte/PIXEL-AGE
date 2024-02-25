@@ -1,14 +1,17 @@
 import React, { useCallback, useRef } from "react";
 
-
 const PeerContext = React.createContext(null);
+
+// Custom hook to access the Peer context
 export const usePeer = () => React.useContext(PeerContext);
+
 
 export const PeerProvider = (props) => {
     const Peer = useRef(null);
 
     // Initialize Peer and dataChannel in a useEffect
     const createPeer = useCallback((handleNegotiation, handleICECandidateEvent) => {
+        // Create a new RTCPeerConnection
         const peer = new RTCPeerConnection({
             iceServers: [
                 {
@@ -22,13 +25,11 @@ export const PeerProvider = (props) => {
             ],
         });
 
+        // Set the event handlers for negotiation and ICE candidate events
         peer.onnegotiationneeded = handleNegotiation;
         peer.onicecandidate = handleICECandidateEvent;
 
-        peer.onicecandidateerror = (e) => {
-            console.error(e);
-        };
-
+        // Set the current Peer reference
         Peer.current = peer;
     }, []);
 
@@ -39,6 +40,7 @@ export const PeerProvider = (props) => {
         return offer;
     }, []);
 
+
     const createAnswer = useCallback(async (offer) => {
         const desc = new RTCSessionDescription(offer);
         await Peer.current.setRemoteDescription(desc);
@@ -46,7 +48,6 @@ export const PeerProvider = (props) => {
         await Peer.current.setLocalDescription(answer);
         return answer;
     }, []);
-
 
     return (
         <PeerContext.Provider value={{ Peer, createOffer, createAnswer, createPeer }}>

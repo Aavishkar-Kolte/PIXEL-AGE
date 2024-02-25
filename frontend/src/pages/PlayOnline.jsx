@@ -11,11 +11,13 @@ function PlayOnlinePage() {
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        setLobbyCode("")
-        setName("")
-    }, [])
+        // Reset lobby code and name when component mounts
+        setLobbyCode("");
+        setName("");
+    }, []);
 
     const HandleCreatedLobby = useCallback((data) => {
+        // Handle event when lobby is created
         setLobbyCode(data.lobbyCode);
         setName(data.name);
         setThisPlayerId(data.playerId);
@@ -24,6 +26,7 @@ function PlayOnlinePage() {
     }, [setLobbyCode, setName, setThisPlayerId]);
 
     const HandleJoinedLobby = useCallback((data) => {
+        // Handle event when joining an existing lobby
         setName(data.name);
         setThisPlayerId(data.playerId);
         setLobbyCode(data.lobbyCode);
@@ -33,28 +36,31 @@ function PlayOnlinePage() {
     }, []);
 
     useEffect(() => {
+        // Subscribe to socket events when component mounts
         socket.on("created-lobby", HandleCreatedLobby);
         socket.on("joined-lobby", HandleJoinedLobby);
 
         return () => {
+            // Unsubscribe from socket events when component unmounts
             socket.off("created-lobby", HandleCreatedLobby);
             socket.off("joined-lobby", HandleJoinedLobby);
         }
     }, [socket, HandleCreatedLobby]);
 
     useEffect(() => {
+        // Redirect to lobby when ready
         if (isReady) {
             setIsPlayOnline(true);
             navigate(`/lobby/${lobbyCode}`);
         }
     }, [isReady, setLobbyCode, navigate]);
 
-
     const handleSubmit = () => {
-        if (name != "") {
-            socket.emit("play-online", { name })
+        // Handle form submission
+        if (name !== "") {
+            socket.emit("play-online", { name });
         } else {
-            alert("Please enter a valid player name. The field cannot be left empty.")
+            alert("Please enter a valid player name. The field cannot be left empty.");
         }
     }
 
@@ -73,5 +79,3 @@ function PlayOnlinePage() {
 }
 
 export default PlayOnlinePage;
-
-

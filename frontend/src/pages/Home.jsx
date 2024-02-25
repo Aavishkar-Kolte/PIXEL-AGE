@@ -6,9 +6,9 @@ import { ScrollDownAnimation } from '../components/ScrollDownAnimation';
 import { GameTutorial } from '../components/GameTutorial';
 
 
-
 function HomePage() {
     const navigate = useNavigate();
+
     return (
         <div className='flex-center'>
             <div className='homepage-container'>
@@ -26,6 +26,5 @@ function HomePage() {
         </div>
     )
 }
-
 
 export default HomePage;

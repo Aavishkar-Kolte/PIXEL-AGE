@@ -5,26 +5,28 @@ import { initGameObjects } from "../game/GameObjects";
 import { drawAllElements } from "../game/DrawAllElements";
 import { updateKnightSprite } from "../game/UpdateKnightSprite";
 
-
 const FightingGameClient = (props) => {
-
+    // State to hold canvas context
     const [ctx, setCtx] = useState(null);
 
+    // Refs to store game over text, timer, and game over status
     const gameOverText = useRef(null);
     const timer = useRef(null);
     const gameOver = useRef(false);
     let time = useRef(180);
 
+    // Refs to store player and enemy names
     let tempStr = props.getPlayerName();
     const playerName = useRef(tempStr.charAt(0).toUpperCase() + tempStr.slice(1).toLowerCase())
     tempStr = props.getEnemyName();
     const enemyName = useRef(tempStr.charAt(0).toUpperCase() + tempStr.slice(1).toLowerCase())
 
-
+    // Function to establish canvas context
     const establishContext = (context) => {
         setCtx(context);
     };
 
+    // Initializing game objects
     const {
         playerHealthBar,
         playerHealthBarBG,
@@ -42,7 +44,7 @@ const FightingGameClient = (props) => {
         enemy
     } = initGameObjects(ctx);
 
-
+    // Ref to store current status of player
     const currentStatus = useRef({
         lastMove: '',
         isMovingForward: false,
@@ -50,11 +52,11 @@ const FightingGameClient = (props) => {
         isJumping: false,
         isAttacking: false,
         isDefending: false
-    })
+    });
 
-
+    // Event handler for key down event
     function HandleKeyDown(event) {
-        if (event.repeat) return;
+        if (event.repeat) return; // Executes keyup only once
 
         if (!player.dead) {
             switch (event.key) {
@@ -86,8 +88,9 @@ const FightingGameClient = (props) => {
         }
     }
 
+    // Event handler for key up event
     function HandleKeyUp(event) {
-        if (event.repeat) return;
+        if (event.repeat) return; // Executes keyup only once
 
         switch (event.key) {
             case 'd':
@@ -105,9 +108,11 @@ const FightingGameClient = (props) => {
         }
     }
 
+    // Adding event listeners for key events
     window.addEventListener('keydown', HandleKeyDown);
     window.addEventListener('keyup', HandleKeyUp);
 
+    // Ref to store game state
     const gameState = useRef({
         player: {
             currentStatus: enemy.currentStatus,
@@ -130,23 +135,23 @@ const FightingGameClient = (props) => {
         winner: 'dummy'
     });
 
+    // Refs to store previous player and enemy positions
     const prevPlayerPosition = useRef({ x: player.position.x, y: player.position.y });
     const prevEnemyPosition = useRef({ x: enemy.position.x, y: enemy.position.y });
 
-
     const draw = () => {
         if (ctx) {
-
+            // Updating game state from props
             let temp = props.getGameState();
-
             if (temp !== null) {
                 gameState.current = temp;
             }
-
+            // Updating time and game over status
             time.current = gameState.current.time;
             gameOver.current = gameState.current.gameOver;
             currentStatus.current.isAttacking = gameState.current.player.currentStatus.isAttacking;
 
+            // Updating player and enemy properties
             player.currentStatus = gameState.current.player.currentStatus;
             player.currentSprite = gameState.current.player.currentSprite;
             player.health = gameState.current.player.health;
@@ -172,7 +177,6 @@ const FightingGameClient = (props) => {
             }
 
             enemy.dead = gameState.current.enemy.dead
-            enemyHealth.offset.x = gameState.current.enemyHealthOffsetX;
 
             if (time.current > 0) {
                 if (timer.current) {
@@ -180,6 +184,7 @@ const FightingGameClient = (props) => {
                 }
             }
 
+            // Drawing game elements
             drawAllElements({
                 ctx,
                 background,
@@ -201,6 +206,7 @@ const FightingGameClient = (props) => {
                 gameOver
             });
 
+            // Handling game over conditions
             if (time.current <= 0 || enemy.health <= 0 || player.health <= 0) {
                 if (!gameOver.current) {
                     determineWinner(gameOverText, HandleKeyDown, HandleKeyUp, { player, playerName: playerName.current, enemy, enemyName: enemyName.current, time: time.current });
@@ -209,9 +215,8 @@ const FightingGameClient = (props) => {
                 return;
             }
 
-
+            // Updating knight sprites as per key events
             updateKnightSprite(player, enemy)
-
 
 
             if (player.currentStatus.takeHit) {
@@ -228,7 +233,6 @@ const FightingGameClient = (props) => {
                 enemy.currentStatus.isAttacking = false;
             }
 
-            // if player misses
             if (player.currentStatus.isAttacking && player.framesCurrent === 3) {
                 player.currentStatus.isAttacking = false;
             }
@@ -237,7 +241,6 @@ const FightingGameClient = (props) => {
             prevEnemyPosition.current = gameState.current.enemy.position;
         };
     }
-
 
     return (
         <div className="game-container">

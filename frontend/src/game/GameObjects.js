@@ -1,7 +1,7 @@
 import { Sprite } from "../game/Sprite";
 import { Fighter } from "../game/Fighter";
 
-
+// Function to initialize game objects
 export const initGameObjects = (ctx) => {
     // Player healthbar sprite
     const playerHealthBar = new Sprite(ctx, {

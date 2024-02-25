@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Canvas } from "../components/Canvas";
 import { initGameObjects } from "../game/GameObjects";
 import { rectangularCollision, determineWinner } from "../game/Utils";
@@ -7,26 +7,29 @@ import { drawAllElements } from "../game/DrawAllElements";
 import { updateKnightSprite } from "../game/UpdateKnightSprite";
 
 const FightingGameHost = (props) => {
-
+    // State to hold canvas context
     const [ctx, setCtx] = useState(null);
 
+    // Refs to store game over text, timer, game over status, winner, and time
     const gameOverText = useRef(null);
     const timer = useRef(null);
     const gameOver = useRef(false);
     const winner = useRef(null);
     let time = useRef(180);
-    let timerId = useRef()
+    let timerId = useRef();
 
+    // Refs to store player and enemy names
     let tempStr = props.getPlayerName();
     const playerName = useRef(tempStr.charAt(0).toUpperCase() + tempStr.slice(1).toLowerCase())
     tempStr = props.getEnemyName();
     const enemyName = useRef(tempStr.charAt(0).toUpperCase() + tempStr.slice(1).toLowerCase())
 
-
+    // Function to establish canvas context
     const establishContext = (context) => {
         setCtx(context);
     };
 
+    // Initializing game objects using initGameObjects function
     const {
         playerHealthBar,
         playerHealthBarBG,
@@ -44,7 +47,7 @@ const FightingGameHost = (props) => {
         enemy
     } = initGameObjects(ctx);
 
-
+    // Event handler for key down event
     function HandleKeyDown(event) {
         if (event.repeat) return; // Executes keydown only once
 
@@ -72,6 +75,7 @@ const FightingGameHost = (props) => {
         }
     }
 
+    // Event handler for key up event
     function HandleKeyUp(event) {
         if (event.repeat) return; // Executes keyup only once
 
@@ -88,26 +92,20 @@ const FightingGameHost = (props) => {
         }
     }
 
+    // Adding event listeners for key events
     window.addEventListener('keydown', HandleKeyDown);
     window.addEventListener('keyup', HandleKeyUp);
 
 
+    // Effect for decreasing timer
     useEffect(() => {
         decreaseTimer(time, timerId, timer, gameOver);
     }, []);
 
+    // Ref to store player health offset
+    const playerHealthOffsetX = useRef(playerHealth.offset.x);
 
-    const playerHealthOffsetX = useRef(playerHealth.offset.x)
-
-    enemy.currentStatus = {
-        lastMove: '',
-        isMovingForward: false,
-        isMovingBackward: false,
-        isJumping: false,
-        isAttacking: false,
-        isDefending: false
-    }
-
+    // Initializing game state
     const gameState = useRef({
         player: {
             currentStatus: enemy.currentStatus,
@@ -129,16 +127,15 @@ const FightingGameHost = (props) => {
         winner: "test"
     });
 
-
     const draw = () => {
         if (ctx) {
-
+            // Updating enemy status from props
             let temp = props.getClientState();
-
             if (temp !== null) {
                 enemy.currentStatus = temp;
             }
 
+            // Drawing game elements
             drawAllElements({
                 ctx,
                 background,
@@ -158,15 +155,13 @@ const FightingGameHost = (props) => {
                 playerName,
                 enemyName,
                 gameOver
-            })
+            });
 
-
-
-
+            // Resetting player and enemy velocity
             player.velocity.x = 0;
             enemy.velocity.x = 0;
 
-
+            // Handling game over conditions
             if (time.current <= 0 || enemy.health <= 0 || player.health <= 0) {
                 if (!gameOver.current) {
                     winner.current = determineWinner(gameOverText, HandleKeyDown, HandleKeyUp, { player, playerName: playerName.current, enemy, enemyName: enemyName.current, timerId: timerId.current, time: time.current });
@@ -194,7 +189,6 @@ const FightingGameHost = (props) => {
                         gameOver: gameOver.current,
                         winner: winner.current
                     }
-
                     gameState.current.gameOver = true;
                     gameState.current.winner = winner.current;
                     props.sendGameState(gameState.current);
@@ -202,11 +196,10 @@ const FightingGameHost = (props) => {
                 return;
             }
 
-
+            // Updating knight sprite as per key events
             updateKnightSprite(player, enemy);
 
-
-            // enemyHealth is where our player gets hit
+            // Handling collision and attacks
             if (
                 rectangularCollision({
                     rectangle1: enemy,
@@ -222,7 +215,6 @@ const FightingGameHost = (props) => {
                     playerHealthOffsetX.current = playerHealth.image.width * playerHealth.scale * (player.health / 100 - 1);
             }
 
-            // detect for collision & enemy gets hit
             if (
                 rectangularCollision({
                     rectangle1: player,
@@ -238,8 +230,7 @@ const FightingGameHost = (props) => {
                     enemyHealth.offset.x = enemyHealth.image.width * enemyHealth.scale * (enemy.health / 100 - 1);
             }
 
-
-
+            // Updating game state and sending to client
             gameState.current = {
                 player: {
                     currentStatus: enemy.currentStatus,
@@ -262,45 +253,34 @@ const FightingGameHost = (props) => {
                 gameOver: gameOver.current,
                 winner: winner.current
             }
-
             props.sendGameState(gameState.current);
 
-
+            // Resetting takeHit status
             player.currentStatus.takeHit = false;
             enemy.currentStatus.takeHit = false;
 
-
-
-            // if player misses
+            // Resetting attack status if missed
             if (enemy.currentStatus.isAttacking && enemy.framesCurrent === 3) {
                 enemy.currentStatus.isAttacking = false;
             }
 
-            // if player misses
             if (player.currentStatus.isAttacking && player.framesCurrent === 3) {
                 player.currentStatus.isAttacking = false;
             }
-
         }
-
     };
-
-
 
     return (
         <div>
             <div className="game-container">
-
                 <div className="div1">
                     <p ref={timer} className="timer"> 180 </p>
                     <div> </div>
                 </div>
-
                 <div ref={gameOverText} className="game-over-text"> Tie </div>
                 <Canvas draw={draw} establishContext={establishContext} w="854px" h="480px" />
             </div>
         </div>
-
     )
 };
 

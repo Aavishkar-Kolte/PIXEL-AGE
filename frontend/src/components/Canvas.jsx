@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 
-
 export const Canvas = (props) => {
     const { draw, establishContext, establishCanvasWidth, w, h } = props;
     const canvasRef = useRef(null);
     const [context, setContext] = useState(null);
 
+    // Function to resize the canvas based on the window size
     const resizeCanvas = useCallback((context) => {
         const canvas = context.canvas;
         const { width, height } = canvas.getBoundingClientRect();
@@ -24,7 +24,7 @@ export const Canvas = (props) => {
     }, [establishCanvasWidth, h, w]);
 
     useEffect(() => {
-        //i.e. value other than null or undefined
+        // Check if the canvas reference is not null
         if (canvasRef.current) {
             const canvas = canvasRef.current;
             const ctx = canvas.getContext("2d");
@@ -35,23 +35,23 @@ export const Canvas = (props) => {
             if (establishContext) {
                 establishContext(ctx);
             }
-
         }
     }, [establishContext]);
-
 
     useEffect(() => {
         let animationFrameId;
 
-        // Check if null context has been replaced on component mount
+        // Check if the context is not null
         if (context) {
-            //Our draw came here
+            // Render function to continuously draw on the canvas
             const render = () => {
                 draw();
                 animationFrameId = window.requestAnimationFrame(render);
             };
             render();
         }
+
+        // Cleanup function to cancel the animation frame no exiting the component
         return () => {
             window.cancelAnimationFrame(animationFrameId);
         };

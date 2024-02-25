@@ -4,20 +4,20 @@ import { useSocket } from '../providers/Socket';
 import { usePlayerInfo } from '../providers/PlayerInfo';
 import { Header } from '../components/Header';
 
-
 function JoinLobbyPage() {
     const { socket } = useSocket();
     const { lobbyCode, setLobbyCode, name, setName, setThisPlayerId, setIsGameHost } = usePlayerInfo();
 
     useEffect(() => {
-        setLobbyCode("")
-        setName("")
-    }, [])
+        // Reset lobby code and name when component mounts
+        setLobbyCode("");
+        setName("");
+    }, []);
 
     const navigate = useNavigate();
 
-
     const HandleJoinedLobby = useCallback((data) => {
+        // Update player info and navigate to lobby page
         setName(data.name);
         setThisPlayerId(data.playerId);
         setLobbyCode(data.lobbyCode);
@@ -26,35 +26,36 @@ function JoinLobbyPage() {
     }, []);
 
     useEffect(() => {
+        // Listen for socket events
         socket.on("joined-lobby", HandleJoinedLobby);
         socket.on("lobby-not-found", (data) => {
             console.log("not found");
             alert(`Could not find lobby with lobby code: ${data.lobbyCode}. Please try again`);
         });
 
-
+        // Clean up socket event listeners
         return () => {
             socket.off("joined-lobby", HandleJoinedLobby);
             socket.off("lobby-not-found", (data) => {
                 alert(`Could not find lobby with lobby code: ${data.lobbyCode}. Please try again.`)
             });
         }
-    }, [socket, HandleJoinedLobby])
+    }, [socket, HandleJoinedLobby]);
 
     const handleSubmit = () => {
-        if (name != "" && lobbyCode != "") {
+        if (name !== "" && lobbyCode !== "") {
+            // Emit join-lobby event with player name and lobby code to server
             socket.emit("join-lobby", { name, lobbyCode });
-        } else if (name == "" && lobbyCode == "") {
-            alert("Please fill out all the fields.")
+        } else if (name === "" && lobbyCode === "") {
+            alert("Please fill out all the fields.");
         } else {
-            if (name == "") {
-                alert("Please enter a valid player name. The field cannot be left empty.")
-            } else if (lobbyCode == "") {
-                alert("Please enter a valid lobby code. The field cannot be left empty.")
+            if (name === "") {
+                alert("Please enter a valid player name. The field cannot be left empty.");
+            } else if (lobbyCode === "") {
+                alert("Please enter a valid lobby code. The field cannot be left empty.");
             }
         }
     }
-
 
     return (
         <div className='joinlobbypage-container'>
