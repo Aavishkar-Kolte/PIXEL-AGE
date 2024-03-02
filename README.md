@@ -2,7 +2,9 @@
 
 <div align="justify"> 
 PIXEL-AGE is a browser-based online multiplayer fighting game (2-player game). Players can play the game with their friends or engage in random battles with opponents from around the world. To initiate a game with friends, players can create a private lobby and share the lobby code with their friends. This allows players to easily join the same game and compete against each other. Alternatively, players can quickly match up with random opponents using the "Play Online" feature. The game also has an in-game chat feature.
-</div>
+</div> <br>
+
+<img src="https://github.com/Aavishkar-Kolte/PIXEL-AGE/assets/120270667/63ad7200-139a-4e32-b199-17e8ce350c24" width="100%" height="100%" alt="PIXEL-AGE">
 
 ##### [GAMEPLAY DEMO](https://youtu.be/wVRw1fhWWBo?si=4GJciR4VSUVVLz-E)
 
@@ -16,9 +18,11 @@ PIXEL-AGE is a browser-based online multiplayer fighting game (2-player game). P
 
 ## ✨ Architecture
 
+<img src="https://github.com/Aavishkar-Kolte/PIXEL-AGE/assets/120270667/fc7b534e-f1f7-4f74-8cc9-479707c89e78" width="100%" height="100%" alt="PIXEL-AGE Architecture Diagram">
+
 ## 🛠️ Local Development Setup
 
-First, clone the repository to your local machine:
+First, clone the repository to your local machine
 
 ### Installing Dependencies
 
