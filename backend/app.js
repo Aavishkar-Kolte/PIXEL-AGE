@@ -18,6 +18,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+app.use(express.static('public'))
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

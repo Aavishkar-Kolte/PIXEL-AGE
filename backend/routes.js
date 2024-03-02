@@ -1,6 +1,6 @@
 export const configureRoutes = (app) => {
     app.get('/', (req, res) => {
-        res.sendFile(__dirname + "/public/index.html");
+        res.sendFile("index.html");
     })
 
     app.get('/*', (req, res) => {
