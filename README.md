@@ -6,15 +6,18 @@ PIXEL-AGE is a browser-based online multiplayer fighting game (2-player game). P
 
 <img src="https://github.com/Aavishkar-Kolte/PIXEL-AGE/assets/120270667/63ad7200-139a-4e32-b199-17e8ce350c24" width="100%" height="100%" alt="PIXEL-AGE">
 
-##### [GAMEPLAY DEMO](https://youtu.be/wVRw1fhWWBo?si=4GJciR4VSUVVLz-E)
-
 #### [PLAY NOW](http://pixel-age.ap-south-1.elasticbeanstalk.com)
+
+Check out gameplay demo [here](https://youtu.be/wVRw1fhWWBo?si=4GJciR4VSUVVLz-E).
+
+Check out my Medium article [here](https://medium.com/@aavishkarkolte/this-is-how-i-developed-my-first-browser-based-online-multiplayer-fighting-game-pixel-age-f92e905f54ed), where I've documented my entire journey in detail.
 
 ## 💻 Technology Stack
 
 - Frontend: ReactJS, HTML Canvas, CSS, JS
 - Backend: NodeJS, ExpressJS, MongoDB
 - Other: Socket.IO, WebRTC
+- Testing: Jest
 
 ## ✨ Architecture
 
@@ -56,6 +59,21 @@ npm run start-frontend
 ```
 
 Running npm run start will launch both servers concurrently, allowing you to interact with the complete project. Use the separate scripts if you need to run each server individually.
+
+## 🧪 Testing
+
+As of now the project only includes tests for backend.
+
+### Testing the Backend
+
+To run the backend tests, you will need to navigate to the backend directory and execute the test script.
+
+```
+cd backend
+npm run test
+```
+
+This will run all the jest tests and display the results in your terminal:
 
 ## 🐛 Bug Reporting
 
