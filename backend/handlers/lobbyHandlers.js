@@ -83,6 +83,9 @@ export const handleJoinLobby = async (data, socket, isPrivate) => {
                 // .then((e) => console.log("deleted", e, newPlayer._id))
                 // .catch((e) => console.log("error", e));
             }, 600000);
+        } else {
+            // Emit an event to notify the client that the lobby is not open
+            socket.emit("lobby-not-open", { lobbyCode: data.lobbyCode });
         }
     } else {
         // console.log("not found");

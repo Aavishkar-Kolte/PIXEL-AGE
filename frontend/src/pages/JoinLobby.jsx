@@ -29,8 +29,15 @@ function JoinLobbyPage() {
         // Listen for socket events
         socket.on("joined-lobby", HandleJoinedLobby);
         socket.on("lobby-not-found", (data) => {
-            console.log("not found");
-            alert(`Could not find lobby with lobby code: ${data.lobbyCode}. Please try again`);
+            alert(`Could not find lobby with code: ${data.lobbyCode}. Please try again`);
+            setName("");
+            setLobbyCode("");
+        });
+
+        socket.on("lobby-not-open", (data) => {
+            alert(`The lobby with code: ${data.lobbyCode} is not open. Please try again.`);
+            setName("");
+            setLobbyCode("");
         });
 
         // Clean up socket event listeners
@@ -38,6 +45,14 @@ function JoinLobbyPage() {
             socket.off("joined-lobby", HandleJoinedLobby);
             socket.off("lobby-not-found", (data) => {
                 alert(`Could not find lobby with lobby code: ${data.lobbyCode}. Please try again.`)
+                setName("");
+                setLobbyCode("");
+            });
+
+            socket.off("lobby-not-open", (data) => {
+                alert(`The lobby with code: ${data.lobbyCode} is not open. Please try again.`);
+                setName("");
+                setLobbyCode("");
             });
         }
     }, [socket, HandleJoinedLobby]);
