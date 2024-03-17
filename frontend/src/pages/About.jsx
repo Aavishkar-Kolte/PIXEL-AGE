@@ -3,12 +3,12 @@ import React from 'react';
 function AboutPage() {
 
     return (
-        <div className='aboutpage-container'>
+        <div className='flex flex-center flex-column background-img width-100p height-100vh'>
             <div className='about'>
 
                 <div id='about-game'>
-                    <h1>PIXEL-AGE</h1>
-                    <p>
+                    <h1 className='text-center'>PIXEL-AGE</h1>
+                    <p className='text-center'>
                         PIXEL-AGE is a browser-based, online multiplayer game (2-player game) designed to play with friends
                         or to engage in random battles with opponents from around the world. To initiate a game with friends,
                         players can create a private lobby and share the lobby code with their friends. This allows players to
@@ -18,8 +18,8 @@ function AboutPage() {
                 </div>
 
                 <div id='about-developer'>
-                    <h3>ABOUT DEVELOPER</h3>
-                    <p>
+                    <h3 className='text-center'>ABOUT DEVELOPER</h3>
+                    <p className='text-center'>
                         Hey!!! I am Aavishkar Kolte. I am an undergrad student pursuing BTech in Information Technology at Vellore
                         Institute of Technology, Vellore, India. I have developed this browser-based online multiplayer game. I hope
                         you like this game. if you have any suggestions or want to report any bugs do let me know on my
@@ -27,7 +27,7 @@ function AboutPage() {
                     </p>
                 </div>
 
-                <div id="contact">
+                <div className='flex flex-center flex-column'>
                     <h3 >CONTACT HERE</h3>
                     <div>
                         <a href='mailto:aavishkarkolte@gmail.com' target='_blank' rel='noreferrer'>

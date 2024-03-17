@@ -2,8 +2,8 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useSocket } from '../providers/Socket';
 import { usePlayerInfo } from '../providers/PlayerInfo';
 import { usePeer } from '../providers/Peer';
-import FightingGameHost from './FightingGameHost';
-import FightingGameClient from './FightingGameClient';
+import FightingGameHost from '../components/FightingGameHost';
+import FightingGameClient from '../components/FightingGameClient';
 import { Chat } from '../components/Chat';
 import { useNavigate } from 'react-router-dom';
 import { MatchmakingAnimation } from '../components/MatchmakingAnimation';
@@ -226,7 +226,7 @@ function LobbyPage() {
    }
 
    return (
-      <div className='lobbypage-container'>
+      <div className='flex flex-center flex-column background-img width-100p height-100vh'>
          <div id='game-and-chat-outer-container'>
             {start ?
                (
@@ -240,7 +240,7 @@ function LobbyPage() {
 
                         </div> */}
                      </div>
-                     <div className='chatbox-ad-div'>
+                     <div className="width-100p height-100p">
                         <Chat getMessages={getMessages} sendMessage={sendMessage} />
                         {/* <div className='ad1'>
 
@@ -250,7 +250,7 @@ function LobbyPage() {
                )
                : (
                   isPlayOnline ?
-                     <div id='lobby-wait-div'>
+                     <div id='lobby-wait-container'>
                         <div>
                            <h1>MATCHMAKING</h1>
                         </div>
@@ -263,7 +263,7 @@ function LobbyPage() {
                               <>
                                  <h5 style={{ width: "30%" }}>We apologize for extended matchmaking times. Currently, there are fewer players online. We appreciate your patience as we work to improve the situation.</h5>
                                  <br />
-                                 <button className='button5' onClick={handleCancelMatchmaking}>Cancel Matchmaking</button>
+                                 <button className='button2' onClick={handleCancelMatchmaking}>Cancel Matchmaking</button>
                               </>
 
                               : null)}
@@ -272,14 +272,14 @@ function LobbyPage() {
 
                      :
 
-                     <div id='lobby-wait-div'>
+                     <div id='lobby-wait-container'>
                         <div>
-                           <h1>LOBBY CODE: {lobbyCode}</h1>
-                           <h2>Share this code with a friend to join the game</h2>
+                           <h1 className='text-center'>LOBBY CODE: {lobbyCode}</h1>
+                           <h4>Share this code with a friend to join the game</h4>
                         </div>
                         <MatchmakingAnimation />
 
-                        <h2>Please wait for your friend to join</h2>
+                        <h4>Please wait for your friend to join</h4>
                      </div>
                )
             }

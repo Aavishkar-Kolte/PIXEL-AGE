@@ -5,9 +5,9 @@ export const Header = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="header">
+        <div className="header flex width-100p">
             <h1 className="logo">PIXEL-AGE</h1>
-            <button id="header-option" onClick={() => { navigate("/about") }}>
+            <button className="header-option" onClick={() => { navigate("/about") }}>
                 ABOUT
             </button>
         </div>

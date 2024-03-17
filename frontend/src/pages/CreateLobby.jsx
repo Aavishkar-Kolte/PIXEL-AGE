@@ -52,13 +52,13 @@ function CreateLobbyPage() {
     }
 
     return (
-        <div className='createlobbypage-container'>
+        <div className='flex flex-center background-img width-100p height-100vh'>
             <div>
                 <Header />
                 <div className='form-div'>
-                    <input type="text" placeholder="player name" value={name} onChange={e => { if (e.target.value.length <= 15) setName(e.target.value); }} />
-                    <button className="button-confirm" onClick={handleSubmit}> CREATE-LOBBY </button>
-                    <h3 id='home-vp-text'>2-PLAYER ONLINE GAME THAT YOU CAN PLAY WITH YOUR FRIENDS.</h3>
+                    <input className="form-input" type="text" placeholder="player name" value={name} onChange={e => { if (e.target.value.length <= 15) setName(e.target.value); }} />
+                    <button className="button1" onClick={handleSubmit}> CREATE-LOBBY </button>
+                    <h3 id='home-tagline-text'>2-PLAYER ONLINE GAME THAT YOU CAN PLAY WITH YOUR FRIENDS.</h3>
                 </div>
             </div>
         </div>

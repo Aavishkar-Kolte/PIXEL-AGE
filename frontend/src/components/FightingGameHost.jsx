@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Canvas } from "../components/Canvas";
+import { Canvas } from "./Canvas";
 import { initGameObjects } from "../game/GameObjects";
 import { rectangularCollision, determineWinner } from "../game/Utils";
 import { decreaseTimer } from "../utils/Timer";
@@ -272,12 +272,12 @@ const FightingGameHost = (props) => {
 
     return (
         <div>
-            <div className="game-container">
-                <div className="div1">
-                    <p ref={timer} className="timer"> 180 </p>
+            <div className="relative">
+                <div id="timer-div" className="flex flex-center" >
+                    <p ref={timer} id="timer-text"> 180 </p>
                     <div> </div>
                 </div>
-                <div ref={gameOverText} className="game-over-text"> Tie </div>
+                <div ref={gameOverText} id="game-over-text"> Tie </div>
                 <Canvas draw={draw} establishContext={establishContext} w="854px" h="480px" />
             </div>
         </div>
