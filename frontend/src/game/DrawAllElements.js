@@ -57,7 +57,7 @@ export const drawAllElements = ({
         0,
         enemyHealth.image.width,
         enemyHealth.image.height,
-        enemyHealth.position.x - enemyHealth.offset.x,
+        enemyHealth.position.x - enemyHealth.image.width * enemyHealth.scale * (enemy.health / 100 - 1),
         enemyHealth.position.y - enemyHealth.offset.y,
         (enemyHealth.image.width * enemy.health / 100) * enemyHealth.scale,
         enemyHealth.image.height * enemyHealth.scale
