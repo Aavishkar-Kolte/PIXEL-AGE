@@ -226,8 +226,6 @@ const FightingGameHost = (props) => {
                 enemy.takeHit();
                 player.currentStatus.takeHit = true;
                 player.currentStatus.isAttacking = false;
-                if (enemy.health > 0)
-                    enemyHealth.offset.x = enemyHealth.image.width * enemyHealth.scale * (enemy.health / 100 - 1);
             }
 
             // Updating game state and sending to client
