@@ -148,7 +148,6 @@ const FightingGameClient = (props) => {
             }
             // Updating time and game over status
             time.current = gameState.current.time;
-            gameOver.current = gameState.current.gameOver;
             currentStatus.current.isAttacking = gameState.current.player.currentStatus.isAttacking;
 
             // Updating player and enemy properties
