@@ -19,9 +19,35 @@ Check out my Medium article [here](https://medium.com/@aavishkarkolte/this-is-ho
 - Other: Socket.IO, WebRTC
 - Testing: Jest
 
+## 🚀 Features
+
+- Private Lobbies: Players can create private lobbies and share the lobby code with friends to easily connect and compete against each other.
+
+- Random Matchmaking: For quick gameplay, players can opt for the "Play-Online" feature, matching them with random opponents.
+
+- In-Game Chat: Communicate with opponents or friends through the in-game chat feature.
+
+- Basic Client-Side Prediction: To deal with latency issues, this feature allows for smoother gameplay experiences by predicting the game state locally and adjusting accordingly, thus reducing the impact of network delays. It simply calculates the current position based on the last received data and updates animation frames, maintaining the player's actions as per their last received data.
+
+- Player Actions: Navigate forward and backward with 'a' and 'd', jump with 'w', attack using 'Space', and defend with 'k'. While defending, players receive 75% less damage.
+
 ## ✨ Architecture
 
 <img src="https://github.com/Aavishkar-Kolte/PIXEL-AGE/assets/120270667/fc7b534e-f1f7-4f74-8cc9-479707c89e78" width="100%" height="100%" alt="PIXEL-AGE Architecture Diagram">
+
+## ✨ Working
+
+I developed this game out of my curiosity to delve into the mechanics of multiplayer games and explore the potential of WebRTC. In this section, I'll provide a high-level overview of how this project works.
+
+This game uses P2P architecture, where players connect directly to each other to share game state and actions. Unlike the dedicated server setup where all players connect to one central server, in P2P, each player's system handles game calculations independently or together if the implementation of game state calculation is deterministic in nature.
+
+There are pros and cons to using P2P. On the plus side, it eliminates the need for a dedicated server, saving on server costs, and allowing more simultaneous matches with the same resources. And that's why i chose P2P. However, it's easier for cheaters to manipulate the game in a P2P setup compared to a dedicated server where the server controls everything. But that's not my concern for now.
+
+In this game, WebRTC is used for communication between two players, while socket.io handles communication between the player and the signaling server. When two players start a game, they connect through a signaling server. This server helps exchange their SDP (Session Description Protocol) offer and answer. Once this connection is set up, the game begins. For a more detailed understanding of how connections are established in WebRTC, you can check out this [documentation](https://webrtc.org/getting-started/peer-connections#initiating_peer_connections).
+
+Once connection is estabilished between player the game starts. During the game, the game state is calculated on one peer and then shared with another peer. I know this is the most trivial and a not so good way to implement a multiplayer game. I have recently learned about delay-based netcode and rollback netcode and i am looking forward to implement a combined method of these two in this game in future. If you're interested in contributing to this project, feel free to implement it and initiate a pull request. I'll review it and consider merging it into the game.
+
+To handle latency, I've implemented a basic client-side prediction method. When the game starts, one player becomes the host and the other becomes the client. Both players calculate and render visual elements like position, velocity, and animation frames. However, collision detection and damage calculations are done only on the host side. And the client-side prediction simply calculates the current position based on the last received data and updates animation frames, maintaining the player's actions as per their last received data. This means that even if there's a delay in receiving game state data on the client side, the game still feels smooth and responsive.
 
 ## 🛠️ Local Development Setup
 
