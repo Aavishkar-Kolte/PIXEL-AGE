@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /play-online
+Disallow: /create-lobby
+Disallow: /join-lobby
+Disallow: /lobby
+
+Sitemap: https://pixel-age.vercel.app/sitemap.xml

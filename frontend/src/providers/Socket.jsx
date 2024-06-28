@@ -10,8 +10,8 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = (props) => {
-    const socket = useMemo(() => io("http://localhost:8000"), []);
-
+    const socketURL = process.env.REACT_APP_SOCKET_IO_URL;
+    const socket = useMemo(() => io(socketURL), []);
     return (
         <SocketContext.Provider value={{ socket }}>
             {props.children}

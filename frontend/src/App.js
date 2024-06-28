@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import './App.css';
 
 import HomePage from './pages/Home';
@@ -12,8 +13,22 @@ import PlayOnlinePage from './pages/PlayOnline';
 import AboutPage from './pages/About';
 
 function App() {
+  const trackingId = process.env.REACT_APP_GA_TRACKING_ID;
   return (
     <div className="App">
+      <Helmet>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}></script>
+        <script>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', '${trackingId}');
+          `}
+        </script>
+      </Helmet>
+
       <SocketProvider>
         <PlayerProvider>
           <PeerProvider>
